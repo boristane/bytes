@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Byte } from "./Byte";
 
 @Entity()
 export class User {
@@ -15,4 +16,7 @@ export class User {
     default: false
   })
   admin: boolean;
+
+  @OneToMany(type => Byte, byte => byte.author)
+  bytes: Byte[];
 }

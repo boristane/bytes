@@ -2,10 +2,9 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
   ManyToMany,
-  JoinTable
+  JoinTable,
+  ManyToOne
 } from "typeorm";
 import { User } from "./User";
 import { Tag } from "./Tag";
@@ -26,11 +25,10 @@ export class Byte {
 
   @ManyToMany(type => Tag)
   @JoinTable()
-  categories: Tag[];
+  tags: Tag[];
 
-  // @OneToOne(type => User)
-  // @JoinColumn()
-  // author: User;
+  @ManyToOne(type => User, author => author.bytes)
+  author: User;
 
   @Column({ type: "timestamp", default: new Date() })
   created: Date;
