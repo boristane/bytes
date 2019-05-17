@@ -1,7 +1,7 @@
 {
-  "name": "election-coordination",
+  "name": "bytes",
   "version": "1.0.0",
-  "description": "test",
+  "description": "A collection of regular small blog posts",
   "main": "index.ts",
   "scripts": {
     "test": "npx jest --detectOpenHandles --runInBand",
@@ -9,8 +9,7 @@
     "start": "npx ts-node index.ts"
   },
   "keywords": [
-    "election",
-    "stuff"
+    "blog"
   ],
   "author": "Boris Tane",
   "license": "ISC",

@@ -4,6 +4,8 @@
   "port": 5432,
   "username": "postgres",
   "password": "password",
-  "database": "elections",
-  "entities": ["src/entity/**/*.ts"]
+  "database": "bytes",
+  "entities": [
+    "src/entity/**/*.ts"
+  ]
 }

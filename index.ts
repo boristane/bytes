@@ -2,6 +2,8 @@ import { Connection, createConnection, getConnectionManager } from "typeorm";
 
 import { User } from "./src/entity/User";
 import { app } from "./src/server";
+import { Tag } from "./src/entity/Tag";
+import { Byte } from "./src/entity/Byte";
 
 async function main() {
   await createConnection({
@@ -10,8 +12,8 @@ async function main() {
     port: 5432,
     username: "postgres",
     password: "password",
-    database: "elections",
-    entities: [User]
+    database: "bytes",
+    entities: [User, Tag, Byte]
   });
   //   await connection.connect();
   app.listen(3333, () => console.log("Server started on port 3333"));
