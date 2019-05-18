@@ -2,19 +2,12 @@ import { Connection, createConnection } from "typeorm";
 import { User } from "../src/entity/User";
 import { app } from "../src/server";
 import request from "supertest";
+import connectToDB from "../src/utils/connectToDB";
 
 let connection: Connection;
 
 beforeAll(async () => {
-  connection = await createConnection({
-    type: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: "postgres",
-    password: "password",
-    database: "bytes",
-    entities: [User]
-  });
+  connection = await connectToDB();
 });
 
 it("should respond with 200", async () => {

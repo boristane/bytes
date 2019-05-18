@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Byte } from "./Byte";
+import { IsEmail } from "class-validator";
 
 @Entity()
 export class User {
@@ -10,6 +11,10 @@ export class User {
   name: string;
 
   @Column()
+  password: string;
+
+  @Column({ unique: true, nullable: false })
+  @IsEmail()
   email: string;
 
   @Column({ type: "timestamp", default: new Date() })

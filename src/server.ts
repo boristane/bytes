@@ -1,15 +1,15 @@
 import express from "express";
 import { getConnection } from "typeorm";
 import { User } from "./entity/User";
+import router from "./routes/users";
 export const app = express();
 app.use(express.json());
 
 app.post("/user/update", updateUser);
 
-async function updateUser(
-  req: express.Request,
-  res: express.Response
-) {
+app.use("/user/", router);
+
+async function updateUser(req: express.Request, res: express.Response) {
   const data = req.body;
 
   const connection = getConnection();
