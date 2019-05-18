@@ -9,8 +9,14 @@ export class User {
   @Column()
   name: string;
 
+  @Column()
+  email: string;
+
   @Column({ type: "timestamp", default: new Date() })
-  last_updated: Date;
+  updated: Date;
+
+  @Column({ type: "timestamp", default: new Date() })
+  created: Date;
 
   @Column({
     default: false
