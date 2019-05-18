@@ -28,6 +28,11 @@ export class User {
   })
   admin: boolean;
 
+  @Column({
+    default: false
+  })
+  activated: boolean;
+
   @OneToMany(type => Byte, byte => byte.author)
   bytes: Byte[];
 }

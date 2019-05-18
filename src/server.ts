@@ -2,6 +2,8 @@ import express from "express";
 import { getConnection } from "typeorm";
 import { User } from "./entity/User";
 import router from "./routes/users";
+require("dotenv").config();
+
 export const app = express();
 app.use(express.json());
 

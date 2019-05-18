@@ -3,7 +3,7 @@ import { User } from "../entity/User";
 import { Tag } from "../entity/Tag";
 import { Byte } from "../entity/Byte";
 
-export default async function connectToDB(): Promise<Connection> {
+export default async function createConnectionToDB(): Promise<Connection> {
   const connection = await createConnection({
     type: "postgres",
     host: "localhost",

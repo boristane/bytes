@@ -1,0 +1,20 @@
+[
+  {
+    "name": "brian",
+    "email": "brian@lol.com",
+    "password": "password",
+    "admin": false
+  },
+  {
+    "name": "derek",
+    "email": "ddb@lewatibg.com",
+    "password": "gims",
+    "admin": true
+  },
+  {
+    "name": "houre",
+    "email": "houre@jewanda.com",
+    "password": "houre",
+    "admin": false
+  }
+]

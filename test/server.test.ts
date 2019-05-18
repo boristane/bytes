@@ -2,12 +2,12 @@ import { Connection, createConnection } from "typeorm";
 import { User } from "../src/entity/User";
 import { app } from "../src/server";
 import request from "supertest";
-import connectToDB from "../src/utils/connectToDB";
+import createConnectionToDB from "../src/utils/createConnectionToDB";
 
 let connection: Connection;
 
 beforeAll(async () => {
-  connection = await connectToDB();
+  connection = await createConnectionToDB();
 });
 
 it("should respond with 200", async () => {
