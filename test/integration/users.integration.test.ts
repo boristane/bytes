@@ -37,6 +37,21 @@ describe("users listing", () => {
     expect(response.status).toBe(200);
     expect(response.body.count).toBe(users.length);
   });
+
+  it("should return 404 on user not found", async () => {
+    const id = 3;
+    const response = await request(app).get(`/user/${id}`);
+
+    expect(response.status).toBe(404);
+  });
+
+  it("should return the correct valid user", async () => {
+    await insertUsers(pgClient, users);
+    const id = 1;
+    const response = await request(app).get(`/user/${id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.user.name).toEqual(users[id - 1].name);
+  });
 });
 
 describe("signup", () => {
@@ -78,5 +93,80 @@ describe("signup", () => {
       .send(user);
 
     expect(response.status).toBe(500);
+    expect(response.body.message).toBe("Invalid email address.");
+  });
+});
+
+describe("login", () => {
+  it("should fail loging in a non-existing user", async () => {
+    const response = await request(app)
+      .post("/user/login")
+      .send({
+        email: "blabla@blabla.com",
+        password: "jewanda"
+      });
+
+    expect(response.status).toBe(401);
+  });
+
+  it("should fail loging in a user with a wrong password", async () => {
+    await insertUsers(pgClient, users);
+    const response = await request(app)
+      .post("/user/login")
+      .send({
+        email: users[0].email,
+        password: "error"
+      });
+
+    expect(response.status).toBe(401);
+  });
+
+  it("should succesfully login a user", async () => {
+    await insertUsers(pgClient, users);
+    const response = await request(app)
+      .post("/user/login")
+      .send({
+        email: users[0].email,
+        password: users[0].password
+      });
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Authentication successful.");
+    expect(response.body.token).toBeTruthy();
+  });
+});
+
+describe("delete", () => {
+  it("should respond with 404 on innexisting use", async () => {
+    const id = 3;
+    const response = await request(app).delete(`/user/${id}`);
+    expect(response.status).toBe(404);
+  });
+
+  it("should reject deletion on user without admin rights", async () => {
+    await insertUsers(pgClient, users);
+    const id = 1;
+    const nonAdmins = users.filter(user => !user.admin);
+
+    const response = await request(app)
+      .post(`/user/delete/${id}`)
+      .send({
+        email: nonAdmins[0].email
+      });
+
+    expect(response.status).toBe(401);
+  });
+
+  it("should succesfully delete users", async () => {
+    await insertUsers(pgClient, users);
+    const id = 1;
+    const admins = users.filter(user => user.admin);
+
+    const response = await request(app)
+      .post(`/user/delete/${id}`)
+      .send({
+        email: admins[0].email
+      });
+
+    expect(response.status).toBe(200);
   });
 });

@@ -1,4 +1,5 @@
 import * as pg from "pg";
+import { hashSync } from "bcrypt";
 
 export function insertUsers(
   client: pg.Client,
@@ -10,10 +11,12 @@ export function insertUsers(
   }>
 ): Promise<pg.QueryResult[]> {
   const promises = users.map(async (user, index) => {
+    const saltRounds = 10;
+    const hashedPassword = hashSync(user.password, saltRounds);
     const query = {
       text:
         "INSERT INTO public.user(id, name, admin, password, email) VALUES($1, $2, $3, $4, $5)",
-      values: [index, user.name, user.admin, user.password, user.email]
+      values: [index + 1, user.name, user.admin, hashedPassword, user.email]
     };
     return client.query(query);
   });

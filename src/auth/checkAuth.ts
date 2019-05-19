@@ -1,4 +1,5 @@
 import * as jwt from "jsonwebtoken";
+import { send401 } from "../utils/defaultResponses";
 
 export default function checkAucth(req, res, next) {
   try {
@@ -7,8 +8,6 @@ export default function checkAucth(req, res, next) {
     req.userData = decoded;
     next();
   } catch (error) {
-    res.status(401).json({
-      message: "Authentication Failed."
-    });
+    send401(res);
   }
 }
