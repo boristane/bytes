@@ -6,6 +6,7 @@ import { insertUsers } from "../utils/insertToDB";
 import removeAllFromDB from "../utils/removeAllFromDB";
 import users from "../fixtures/users.json";
 import * as pg from "pg";
+import { sign } from "jsonwebtoken";
 
 let connection: Connection;
 let pgClient: pg.Client;
@@ -136,9 +137,13 @@ describe("login", () => {
 });
 
 describe("delete", () => {
-  it("should respond with 404 on innexisting use", async () => {
+  it("should respond with 404 on non-existing user", async () => {
     const id = 3;
-    const response = await request(app).delete(`/user/${id}`);
+    const token = sign(users[0].email, process.env.JWT_KEY);
+    const response = await request(app)
+      .delete(`/user/${id}`)
+      .set("Authorization", `Bearer ${token}`);
+
     expect(response.status).toBe(404);
   });
 
@@ -146,26 +151,62 @@ describe("delete", () => {
     await insertUsers(pgClient, users);
     const id = 1;
     const nonAdmins = users.filter(user => !user.admin);
+    const token = sign(nonAdmins[0].email, process.env.JWT_KEY);
 
     const response = await request(app)
-      .post(`/user/delete/${id}`)
-      .send({
-        email: nonAdmins[0].email
-      });
+      .delete(`/user/delete/${id}`)
+      .set("Authorization", `Bearer ${token}`);
 
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(403);
   });
 
-  it("should succesfully delete users", async () => {
+  it("should succesfully delete a user", async () => {
     await insertUsers(pgClient, users);
     const id = 1;
     const admins = users.filter(user => user.admin);
+    const token = sign(admins[0].email, process.env.JWT_KEY);
 
     const response = await request(app)
-      .post(`/user/delete/${id}`)
-      .send({
-        email: admins[0].email
-      });
+      .delete(`/user/delete/${id}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+  });
+});
+
+describe("make admin", () => {
+  it("should respond with 404 on non-existing user", async () => {
+    const id = 3;
+    const token = sign(users[0].email, process.env.JWT_KEY);
+
+    const response = await request(app)
+      .post(`/user/make-admin/${id}`)
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(404);
+  });
+
+  it("should reject a non admin making others admin", async () => {
+    await insertUsers(pgClient, users);
+    const id = 1;
+    const nonAdmins = users.filter(user => !user.admin);
+    const token = sign(nonAdmins[0].email, process.env.JWT_KEY);
+
+    const response = await request(app)
+      .post(`/user/make-admin/${id}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(403);
+  });
+
+  it("should succesfully make a user admin", async () => {
+    await insertUsers(pgClient, users);
+    const id = 1;
+    const admins = users.filter(user => user.admin);
+    const token = sign(admins[0].email, process.env.JWT_KEY);
+
+    const response = await request(app)
+      .post(`/user/make-admin/${id}`)
+      .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(200);
   });

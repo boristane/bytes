@@ -19,3 +19,9 @@ export function send401(res: Response) {
     message: "Authentication failed."
   });
 }
+
+export function send403(res: Response) {
+  return res.status(403).json({
+    message: "Forbidden."
+  });
+}

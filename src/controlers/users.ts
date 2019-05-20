@@ -1,9 +1,10 @@
 import { getRepository, getConnection } from "typeorm";
 import { User } from "../entity/User";
 import { Request, Response } from "express";
-import { send500, send404, send401 } from "../utils/defaultResponses";
+import { send500, send404, send401, send403 } from "../utils/defaultResponses";
 import { hash, compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
+import { auth } from "../auth/checkAuth";
 
 async function getUserBy(column, value): Promise<User> {
   const userRepository = getRepository(User);
@@ -162,7 +163,8 @@ export async function getOne(req: Request, res: Response): Promise<Response> {
 
 export async function del(req: Request, res: Response): Promise<Response> {
   const { id } = req.params;
-  const { email } = req.body;
+  const token = req.headers.authorization.split(" ")[1];
+  const email = auth(token);
   try {
     const userToDelete = await getUserBy("id", id);
     if (!userToDelete) {
@@ -171,7 +173,7 @@ export async function del(req: Request, res: Response): Promise<Response> {
 
     const user = await getUserBy("email", email);
     if (!user.admin) {
-      return send401(res);
+      return send403(res);
     }
 
     const userRepository = getRepository(User);
@@ -195,10 +197,41 @@ export async function del(req: Request, res: Response): Promise<Response> {
   }
 }
 
-export default {
-  getAll,
-  signup,
-  login,
-  getOne,
-  del
-};
+export async function makeAdmin(req, res) {
+  const { id } = req.params;
+  const token = req.headers.authorization.split(" ")[1];
+  const email = auth(token);
+  try {
+    const userToMakeAdmin = await getUserBy("id", id);
+    if (!userToMakeAdmin) {
+      return send404(res);
+    }
+
+    const user = await getUserBy("email", email);
+    if (!user.admin) {
+      return send403(res);
+    }
+
+    const userRepository = getRepository(User);
+    const result = await userRepository
+      .createQueryBuilder()
+      .update(User)
+      .set({ admin: true })
+      .where("id = :id", { id })
+      .execute();
+
+    return res.status(200).json({
+      message: "User succesfully updated.",
+      user: {
+        email: userToMakeAdmin.email,
+        name: userToMakeAdmin.name
+      },
+      request: {
+        type: "GET",
+        url: `${process.env.URL}/user/${id}`
+      }
+    });
+  } catch (err) {
+    send500(res, err);
+  }
+}
