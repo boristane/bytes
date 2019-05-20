@@ -197,7 +197,7 @@ export async function del(req: Request, res: Response): Promise<Response> {
   }
 }
 
-export async function makeAdmin(req, res) {
+export async function makeAdmin(req, res): Promise<Response> {
   const { id } = req.params;
   const token = req.headers.authorization.split(" ")[1];
   const email = auth(token);
