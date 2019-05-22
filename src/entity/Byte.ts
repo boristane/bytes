@@ -23,11 +23,11 @@ export class Byte {
   @Column()
   body: string;
 
-  @ManyToMany(type => Tag)
+  @ManyToMany(type => Tag, { onDelete: "CASCADE" })
   @JoinTable()
   tags: Tag[];
 
-  @ManyToOne(type => User, author => author.bytes)
+  @ManyToOne(type => User, author => author.bytes, { onDelete: "CASCADE" })
   author: User;
 
   @Column({ type: "timestamp", default: new Date() })

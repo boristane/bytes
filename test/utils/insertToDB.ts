@@ -1,82 +1,83 @@
 import * as pg from "pg";
-import { hashSync } from "bcrypt";
+import { hashSync, hash } from "bcrypt";
+import { getConnection } from "typeorm";
+import { User } from "../../src/entity/User";
+import { Tag } from "../../src/entity/Tag";
+import { Byte } from "../../src/entity/Byte";
+import { getUserBy } from "../../src/utils/utils";
 
 export function insertUsers(
-  client: pg.Client,
   users: Array<{
     name: string;
     admin: boolean;
     password: string;
     email: string;
   }>
-): Promise<pg.QueryResult[]> {
+) {
   const promises = users.map(async (user, index) => {
     const saltRounds = 10;
-    const hashedPassword = hashSync(user.password, saltRounds);
-    const query = {
-      text:
-        "INSERT INTO public.user(id, name, admin, password, email, created) VALUES($1, $2, $3, $4, $5, $6)",
-      values: [
-        index + 1,
-        user.name,
-        user.admin,
-        hashedPassword,
-        user.email,
-        new Date().toUTCString()
-      ]
+    const hashedPassword = await hash(user.password, saltRounds);
+    const newUser: User = {
+      id: index + 1,
+      name: user.name,
+      email: user.email,
+      password: hashedPassword,
+      created: new Date(),
+      updated: new Date(),
+      admin: user.admin,
+      activated: false,
+      bytes: []
     };
-    return client.query(query);
+    const result = await getConnection()
+      .createQueryBuilder()
+      .insert()
+      .orIgnore()
+      .into(User)
+      .values(newUser)
+      .execute();
+    return result;
   });
   return Promise.all(promises);
 }
 
-export function insertBytes(
-  client: pg.Client,
-  bytes: Array<IByte>,
-  tags: string[]
-): Promise<pg.QueryResult[]> {
-  const promises = bytes.map((byte, index) => {
-    const query = {
-      text: `INSERT INTO public.byte(id, title, image, body, "authorId", created) VALUES($1, $2, $3, $4, $5, $6)`,
-      values: [
-        index + 1,
-        byte.title,
-        byte.image,
-        byte.body,
-        byte.author,
-        new Date(new Date().getTime() + index * 6000).toUTCString()
-      ]
+export function insertTags(tags: string[]) {
+  const promises = tags.map(s => {
+    const tag: Tag = {
+      name: s,
+      created: new Date()
     };
-    return client.query(query);
+    const result = getConnection()
+      .createQueryBuilder()
+      .insert()
+      .into(Tag)
+      .values(tag)
+      .execute();
+    return result;
   });
-  for (let i = 0; i < bytes.length; i += 1) {
-    const byte = bytes[i];
-    byte.tags.forEach(tag => {
-      const isInTags = tags.indexOf(tag) > -1;
-      if (isInTags) {
-        const index = tags.indexOf(tag) + 1;
-        const query = {
-          text:
-            'INSERT INTO public.byte_tags_tag("byteId", "tagId") VALUES ($1, $2)',
-          values: [i + 1, index]
-        };
-        promises.push(client.query(query));
-      }
-    });
-  }
+
   return Promise.all(promises);
 }
 
-export function insertTags(
-  client: pg.Client,
-  tags: string[]
-): Promise<pg.QueryResult[]> {
-  const promises = tags.map((tag, index) => {
-    const query = {
-      text: "INSERT INTO public.tag(id, name) VALUES ($1, $2)",
-      values: [index + 1, tag]
+export function insertBytes(bytes: Array<IByte>) {
+  const promises = bytes.map(async (obj, index) => {
+    const t = obj.tags;
+    const byte: Byte = {
+      title: obj.title,
+      image: obj.image,
+      body: obj.body,
+      created: new Date(new Date().getTime() + index * 6000),
+      updated: new Date(new Date().getTime() + index * 6000),
+      author: await getUserBy("email", obj.author),
+      tags: []
     };
-    return client.query(query);
+
+    const result = getConnection()
+      .createQueryBuilder()
+      .insert()
+      .into(Byte)
+      .values(byte)
+      .execute();
+    return result;
   });
   return Promise.all(promises);
 }

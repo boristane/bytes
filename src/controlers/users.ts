@@ -5,19 +5,7 @@ import { send500, send404, send401, send403 } from "../utils/defaultResponses";
 import { hash, compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { auth } from "../auth/checkAuth";
-
-async function getUserBy(column, value): Promise<User> {
-  const userRepository = getRepository(User);
-  const options = {};
-  options[column] = value;
-  const user = await userRepository
-    .createQueryBuilder()
-    .select("user")
-    .from(User, "user")
-    .where(`user.${column} = :${column}`, options)
-    .getOne();
-  return user;
-}
+import { getUserBy } from "../utils/utils";
 
 export async function getAll(req: Request, res: Response): Promise<Response> {
   try {
@@ -38,7 +26,7 @@ export async function getAll(req: Request, res: Response): Promise<Response> {
         updatedAt: doc.updated,
         request: {
           type: "GET",
-          url: `${process.env.URL}/user/${doc.id}`
+          url: `${process.env.URL}/user/?email=${doc.email}`
         }
       }))
     };
@@ -132,9 +120,9 @@ export async function login(req: Request, res: Response): Promise<Response> {
 }
 
 export async function getOne(req: Request, res: Response): Promise<Response> {
-  const { id } = req.params;
+  const { email: userEmail } = req.query;
   try {
-    const user = await getUserBy("id", id);
+    const user = await getUserBy("email", userEmail);
     if (!user) {
       return send404(res);
     }
@@ -162,11 +150,11 @@ export async function getOne(req: Request, res: Response): Promise<Response> {
 }
 
 export async function del(req: Request, res: Response): Promise<Response> {
-  const { id } = req.params;
+  const { email: userEmail } = req.query;
   const token = req.headers.authorization.split(" ")[1];
   const email = auth(token);
   try {
-    const userToDelete = await getUserBy("id", id);
+    const userToDelete = await getUserBy("email", userEmail);
     if (!userToDelete) {
       return send404(res);
     }
@@ -181,7 +169,7 @@ export async function del(req: Request, res: Response): Promise<Response> {
       .createQueryBuilder()
       .delete()
       .from(User)
-      .where("id = :id", { id })
+      .where("email = :email", { email: userEmail })
       .execute();
 
     return res.status(200).json({
@@ -198,11 +186,11 @@ export async function del(req: Request, res: Response): Promise<Response> {
 }
 
 export async function makeAdmin(req, res): Promise<Response> {
-  const { id } = req.params;
+  const { email: userEmail } = req.query;
   const token = req.headers.authorization.split(" ")[1];
   const email = auth(token);
   try {
-    const userToMakeAdmin = await getUserBy("id", id);
+    const userToMakeAdmin = await getUserBy("email", userEmail);
     if (!userToMakeAdmin) {
       return send404(res);
     }
@@ -217,7 +205,7 @@ export async function makeAdmin(req, res): Promise<Response> {
       .createQueryBuilder()
       .update(User)
       .set({ admin: true })
-      .where("id = :id", { id })
+      .where("email = :email", { email: userEmail })
       .execute();
 
     return res.status(200).json({
@@ -228,7 +216,7 @@ export async function makeAdmin(req, res): Promise<Response> {
       },
       request: {
         type: "GET",
-        url: `${process.env.URL}/user/${id}`
+        url: `${process.env.URL}/user/${userEmail}`
       }
     });
   } catch (err) {

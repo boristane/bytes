@@ -3,55 +3,49 @@ import { app } from "../../src/server";
 import request from "supertest";
 import createConnectionToDB from "../../src/utils/createConnectionToDB";
 import { insertUsers } from "../utils/insertToDB";
-import removeAllFromDB from "../utils/removeAllFromDB";
+import { removeAllFromDB } from "../utils/removeAllFromDB";
 import users from "../fixtures/users.json";
-import * as pg from "pg";
 import { sign } from "jsonwebtoken";
+import buildUrl from "../utils/buildURL";
 
 let connection: Connection;
-let pgClient: pg.Client;
 
 beforeAll(async () => {
   connection = await createConnectionToDB();
-  pgClient = new pg.Client();
-  await pgClient.connect();
-  await removeAllFromDB(pgClient);
 });
 
-afterEach(async () => {
-  await removeAllFromDB(pgClient);
-});
-
-afterAll(() => {
-  pgClient.end();
+beforeEach(async () => {
+  await removeAllFromDB();
+  await insertUsers(users);
 });
 
 describe("users listing", () => {
-  it("should return 404 on listing all users on an empty db", async () => {
-    const response = await request(app).get("/user/all");
-    expect(response.status).toBe(404);
-  });
-
   it("should list the correct number of users", async () => {
-    await insertUsers(pgClient, users);
     const response = await request(app).get("/user/all");
     expect(response.status).toBe(200);
     expect(response.body.count).toBe(users.length);
   });
 
   it("should return 404 on user not found", async () => {
-    const id = 3;
-    const response = await request(app).get(`/user/${id}`);
+    const email = "non-existing@user.com";
+    const params = {
+      email
+    };
+    const url = buildUrl("/user/", params);
+    const response = await request(app).get(url);
 
     expect(response.status).toBe(404);
   });
 
   it("should return the correct valid user", async () => {
-    await insertUsers(pgClient, users);
-    const id = 1;
-    const response = await request(app).get(`/user/${id}`);
+    const email = users[0].email;
+    const params = {
+      email
+    };
+    const url = buildUrl("/user/", params);
+    const response = await request(app).get(url);
     expect(response.status).toBe(200);
-    expect(response.body.user.name).toEqual(users[id - 1].name);
+    expect(response.body.user.name).toEqual(users[0].name);
   });
 });
 
@@ -73,7 +67,6 @@ describe("signup", () => {
   });
 
   it("should reject double signup", async () => {
-    await insertUsers(pgClient, users);
     const response = await request(app)
       .post("/user/signup")
       .send(users[0]);
@@ -111,7 +104,6 @@ describe("login", () => {
   });
 
   it("should fail loging in a user with a wrong password", async () => {
-    await insertUsers(pgClient, users);
     const response = await request(app)
       .post("/user/login")
       .send({
@@ -123,7 +115,6 @@ describe("login", () => {
   });
 
   it("should succesfully login a user", async () => {
-    await insertUsers(pgClient, users);
     const response = await request(app)
       .post("/user/login")
       .send({
@@ -138,36 +129,46 @@ describe("login", () => {
 
 describe("delete", () => {
   it("should respond with 404 on non-existing user", async () => {
-    const id = 3;
+    const email = "random@nonexisting.com";
+    const params = {
+      email
+    };
+    const url = buildUrl("/user/delete/", params);
     const token = sign(users[0].email, process.env.JWT_KEY);
     const response = await request(app)
-      .delete(`/user/${id}`)
+      .delete(url)
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(404);
   });
 
   it("should reject deletion on user without admin rights", async () => {
-    await insertUsers(pgClient, users);
-    const id = 1;
+    const email = users[0].email;
+    const params = {
+      email
+    };
+    const url = buildUrl("/user/delete/", params);
     const nonAdmins = users.filter(user => !user.admin);
     const token = sign(nonAdmins[0].email, process.env.JWT_KEY);
 
     const response = await request(app)
-      .delete(`/user/delete/${id}`)
+      .delete(url)
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(403);
   });
 
   it("should succesfully delete a user", async () => {
-    await insertUsers(pgClient, users);
-    const id = 1;
+    const email = users[0].email;
+    const params = {
+      email
+    };
+    const url = buildUrl("/user/delete/", params);
     const admins = users.filter(user => user.admin);
     const token = sign(admins[0].email, process.env.JWT_KEY);
 
     const response = await request(app)
-      .delete(`/user/delete/${id}`)
+      .delete(url)
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(200);
@@ -176,36 +177,46 @@ describe("delete", () => {
 
 describe("make admin", () => {
   it("should respond with 404 on non-existing user", async () => {
-    const id = 3;
+    const email = "non-existing@user.com";
+    const params = {
+      email
+    };
+    const url = buildUrl("/user/make-admin/", params);
     const token = sign(users[0].email, process.env.JWT_KEY);
 
     const response = await request(app)
-      .post(`/user/make-admin/${id}`)
+      .post(url)
       .set("Authorization", `Bearer ${token}`);
     expect(response.status).toBe(404);
   });
 
   it("should reject a non admin making others admin", async () => {
-    await insertUsers(pgClient, users);
-    const id = 1;
+    const email = users[0].email;
+    const params = {
+      email
+    };
+    const url = buildUrl("/user/make-admin", params);
     const nonAdmins = users.filter(user => !user.admin);
     const token = sign(nonAdmins[0].email, process.env.JWT_KEY);
 
     const response = await request(app)
-      .post(`/user/make-admin/${id}`)
+      .post(url)
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(403);
   });
 
   it("should succesfully make a user admin", async () => {
-    await insertUsers(pgClient, users);
-    const id = 1;
+    const email = users[0].email;
+    const params = {
+      email
+    };
+    const url = buildUrl("/user/make-admin/", params);
     const admins = users.filter(user => user.admin);
     const token = sign(admins[0].email, process.env.JWT_KEY);
 
     const response = await request(app)
-      .post(`/user/make-admin/${id}`)
+      .post(url)
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(200);

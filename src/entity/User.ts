@@ -33,6 +33,6 @@ export class User {
   })
   activated: boolean;
 
-  @OneToMany(type => Byte, byte => byte.author)
+  @OneToMany(type => Byte, byte => byte.author, { onDelete: "CASCADE" })
   bytes: Byte[];
 }

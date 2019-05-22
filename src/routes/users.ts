@@ -17,10 +17,10 @@ router.post("/signup", signup);
 
 router.post("/login", login);
 
-router.post("/make-admin/:id", auth, makeAdmin);
+router.post("/make-admin", auth, makeAdmin);
 
-router.get("/:id", getOne);
+router.get("/", getOne);
 
-router.delete("/delete/:id", auth, del);
+router.delete("/delete", auth, del);
 
 export default router;
