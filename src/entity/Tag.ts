@@ -8,6 +8,6 @@ export class Tag {
   @Column()
   name: string;
 
-  @Column({ type: "timestamp", default: new Date() })
+  @Column({ type: "timestamp" })
   created: Date;
 }

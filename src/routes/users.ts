@@ -5,7 +5,8 @@ import {
   login,
   getOne,
   del,
-  makeAdmin
+  makeAdmin,
+  activate
 } from "../controlers/users";
 import auth from "../auth/checkAuth";
 
@@ -21,6 +22,8 @@ router.post("/make-admin", auth, makeAdmin);
 
 router.get("/", getOne);
 
-router.delete("/delete", auth, del);
+router.delete("/", auth, del);
+
+router.post("/activate/:token", activate);
 
 export default router;

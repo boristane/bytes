@@ -1,6 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Byte } from "./Byte";
 import { IsEmail } from "class-validator";
+import { ActivationToken } from "./ActivationToken";
 
 @Entity()
 export class User {
@@ -17,10 +18,10 @@ export class User {
   @IsEmail()
   email: string;
 
-  @Column({ type: "timestamp", default: new Date() })
+  @Column({ type: "timestamp" })
   updated: Date;
 
-  @Column({ type: "timestamp", default: new Date() })
+  @Column({ type: "timestamp" })
   created: Date;
 
   @Column({
@@ -35,4 +36,9 @@ export class User {
 
   @OneToMany(type => Byte, byte => byte.author, { onDelete: "CASCADE" })
   bytes: Byte[];
+
+  @OneToMany(type => ActivationToken, token => token.user, {
+    onDelete: "CASCADE"
+  })
+  activationToken?: ActivationToken[];
 }

@@ -14,7 +14,7 @@ export class Byte {
   @PrimaryGeneratedColumn()
   id?: number;
 
-  @Column()
+  @Column({ unique: true })
   title: string;
 
   @Column()
@@ -30,9 +30,9 @@ export class Byte {
   @ManyToOne(type => User, author => author.bytes, { onDelete: "CASCADE" })
   author: User;
 
-  @Column({ type: "timestamp", default: new Date() })
+  @Column({ type: "timestamp" })
   created: Date;
 
-  @Column({ type: "timestamp", default: new Date() })
+  @Column({ type: "timestamp" })
   updated: Date;
 }

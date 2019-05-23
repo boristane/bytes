@@ -133,7 +133,7 @@ describe("delete", () => {
     const params = {
       email
     };
-    const url = buildUrl("/user/delete/", params);
+    const url = buildUrl("/user/", params);
     const token = sign(users[0].email, process.env.JWT_KEY);
     const response = await request(app)
       .delete(url)
@@ -147,7 +147,7 @@ describe("delete", () => {
     const params = {
       email
     };
-    const url = buildUrl("/user/delete/", params);
+    const url = buildUrl("/user/", params);
     const nonAdmins = users.filter(user => !user.admin);
     const token = sign(nonAdmins[0].email, process.env.JWT_KEY);
 
@@ -163,7 +163,7 @@ describe("delete", () => {
     const params = {
       email
     };
-    const url = buildUrl("/user/delete/", params);
+    const url = buildUrl("/user/", params);
     const admins = users.filter(user => user.admin);
     const token = sign(admins[0].email, process.env.JWT_KEY);
 

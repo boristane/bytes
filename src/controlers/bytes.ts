@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { send500, send404, send401, send403 } from "../utils/defaultResponses";
 import { Byte } from "../entity/Byte";
 import { auth } from "../auth/checkAuth";
-import { getUserBy, getTagBy } from "../utils/utils";
+import { getUserBy, getTagBy, getByteBy } from "../utils/utils";
 import { Tag } from "../entity/Tag";
 
 export async function getMany(req: Request, res: Response): Promise<Response> {
@@ -62,6 +62,10 @@ export async function post(req: Request, res: Response): Promise<Response> {
       return obj;
     });
 
+    if (!author.activated) {
+      return send403(res);
+    }
+
     await saveTags(tags);
 
     const created = new Date();
@@ -93,6 +97,42 @@ export async function post(req: Request, res: Response): Promise<Response> {
     };
 
     return res.status(200).json(response);
+  } catch (err) {
+    send500(res, err);
+  }
+}
+
+export async function del(req: Request, res: Response): Promise<Response> {
+  const { title } = req.query;
+  const token = req.headers.authorization.split(" ")[1];
+  const email = auth(token);
+  try {
+    const byteToDelete = await getByteBy("title", title);
+    if (!byteToDelete) {
+      return send404(res);
+    }
+
+    const user = await getUserBy("email", email);
+    if (!user.admin) {
+      return send403(res);
+    }
+
+    const byteRepository = getRepository(Byte);
+    const result = await byteRepository
+      .createQueryBuilder()
+      .delete()
+      .from(Byte)
+      .where("title = :title", { title })
+      .execute();
+
+    return res.status(200).json({
+      message: "Byte succesfully deleted.",
+      count: result.affected,
+      byte: {
+        title: byteToDelete.title,
+        authore: byteToDelete.author
+      }
+    });
   } catch (err) {
     send500(res, err);
   }

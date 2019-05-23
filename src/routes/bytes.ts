@@ -1,9 +1,11 @@
 import express from "express";
-import { getMany, post } from "../controlers/bytes";
+import { getMany, post, del } from "../controlers/bytes";
 import upload from "../controlers/upload";
+import auth from "../auth/checkAuth";
 
 const router = express.Router();
 
 router.get("/", getMany);
-router.post("/", upload, post);
+router.post("/", auth, upload, post);
+router.delete("/", auth, del);
 export default router;

@@ -6,6 +6,8 @@ import { hash, compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { auth } from "../auth/checkAuth";
 import { getUserBy } from "../utils/utils";
+import { createToken, sendTokenEmail } from "./activationTokens";
+import { ActivationToken } from "../entity/ActivationToken";
 
 export async function getAll(req: Request, res: Response): Promise<Response> {
   try {
@@ -75,6 +77,11 @@ export async function signup(req: Request, res: Response): Promise<Response> {
       .values(newUser)
       .execute();
 
+    const createdUser = await getUserBy("email", email);
+
+    const { token } = await createToken(createdUser);
+    sendTokenEmail(createdUser.email, token.token);
+
     const response = {
       message: "User created successfully.",
       user: {
@@ -85,7 +92,7 @@ export async function signup(req: Request, res: Response): Promise<Response> {
       },
       request: {
         type: "GET",
-        url: `${process.env.URL}/user/${result.raw[0].id}`
+        url: `${process.env.URL}/user/?email=${result.raw[0].id}`
       }
     };
 
@@ -216,7 +223,50 @@ export async function makeAdmin(req, res): Promise<Response> {
       },
       request: {
         type: "GET",
-        url: `${process.env.URL}/user/${userEmail}`
+        url: `${process.env.URL}/user/?email=${userEmail}`
+      }
+    });
+  } catch (err) {
+    send500(res, err);
+  }
+}
+
+export async function activate(req: Request, res: Response) {
+  try {
+    const { token } = req.params;
+    // TODO add a join to get the user with the token
+    const t = await getConnection()
+      .createQueryBuilder()
+      .select("token")
+      .from(ActivationToken, "token")
+      .where(`token.token = :token`, { token })
+      .getOne();
+
+    if (t === undefined) {
+      return send404(res);
+    }
+
+    if (t.expires < new Date()) {
+      return send403(res);
+    }
+
+    const userRepository = getRepository(User);
+    const result = await userRepository
+      .createQueryBuilder()
+      .update(User)
+      .set({ activated: true })
+      .where("email = :email", { email: t.user.email })
+      .execute();
+
+    return res.status(200).json({
+      message: "User succesfully updated.",
+      user: {
+        email: t.user.email,
+        name: t.user.name
+      },
+      request: {
+        type: "GET",
+        url: `${process.env.URL}/user/?email=${t.user.email}`
       }
     });
   } catch (err) {

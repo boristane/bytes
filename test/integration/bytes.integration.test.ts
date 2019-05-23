@@ -10,6 +10,8 @@ import bytes from "../fixtures/bytes.json";
 import { sign } from "jsonwebtoken";
 import buildUrl from "../utils/buildURL";
 import { promisify } from "util";
+import { User } from "../../src/entity/User";
+import { getUserBy } from "../../src/utils/utils";
 require("dotenv").config();
 
 jest.setTimeout(15000);
@@ -27,13 +29,17 @@ beforeAll(async () => {
   await sleep(2000);
 });
 
+async function makeUserActive(email: string) {
+  await getConnection()
+    .createQueryBuilder()
+    .update(User)
+    .set({ activated: true })
+    .where("email = :email", { email: email })
+    .execute();
+}
+
 // describe("bytes listing", () => {
 //   it("should list the first 10 bytes on page 1", async () => {
-//     await removeAllFromDB();
-
-//     await insertUsers(users);
-//     await insertTags(tags);
-//     await insertBytes(bytes);
 //     const params = {
 //       page: 1
 //     };
@@ -50,11 +56,6 @@ beforeAll(async () => {
 //   });
 
 //   it("should list the second page", async () => {
-//     await removeAllFromDB();
-
-//     await insertUsers(users);
-//     await insertTags(tags);
-//     await insertBytes(bytes);
 //     const params = {
 //       page: 2
 //     };
@@ -71,11 +72,6 @@ beforeAll(async () => {
 //   });
 
 //   it("should list the last page", async () => {
-//     await removeAllFromDB();
-
-//     await insertUsers(users);
-//     await insertTags(tags);
-//     await insertBytes(bytes);
 //     const params = {
 //       page: 3
 //     };
@@ -94,12 +90,7 @@ beforeAll(async () => {
 // });
 
 describe("byte posting", () => {
-  it("should successfully post a byte", async () => {
-    await removeAllFromDB();
-
-    await insertUsers(users);
-    await insertTags(tags);
-    await insertBytes(bytes);
+  it("should not post a byte by a non-activated user", async () => {
     const token = sign(users[0].email, process.env.JWT_KEY);
     const response = await request(app)
       .post("/byte/")
@@ -108,6 +99,68 @@ describe("byte posting", () => {
       .field("tags", "music, rpg, elements")
       .attach("body", "test/fixtures/body.md")
       .attach("image", "test/fixtures/image.png");
+
+    expect(response.status).toBe(403);
+  });
+
+  it("should succesfully post a byte by an activated user", async () => {
+    await makeUserActive(users[0].email);
+    const token = sign(users[0].email, process.env.JWT_KEY);
+    const response = await request(app)
+      .post("/byte/")
+      .set("Authorization", `Bearer ${token}`)
+      .field("title", "A random byte")
+      .field("tags", "music, rpg, elements")
+      .attach("body", "test/fixtures/body.md")
+      .attach("image", "test/fixtures/image.png");
+
+    expect(response.status).toBe(200);
+  });
+});
+
+describe("delete", () => {
+  it("should respond with 404 on non existing byte", async () => {
+    const title = "non-existing";
+    const params = {
+      title
+    };
+    const url = buildUrl("/byte/", params);
+    const token = sign(users[0].email, process.env.JWT_KEY);
+    const response = await request(app)
+      .delete(url)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(404);
+  });
+
+  it("should reject deletion on user without admin rights", async () => {
+    const title = bytes[0].title;
+    const params = {
+      title
+    };
+    const url = buildUrl("/byte/", params);
+    const nonAdmins = users.filter(user => !user.admin);
+    const token = sign(nonAdmins[0].email, process.env.JWT_KEY);
+
+    const response = await request(app)
+      .delete(url)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(403);
+  });
+
+  it("should succesfully delete a byte", async () => {
+    const title = bytes[0].title;
+    const params = {
+      title
+    };
+    const url = buildUrl("/byte/", params);
+    const admins = users.filter(user => user.admin);
+    const token = sign(admins[0].email, process.env.JWT_KEY);
+
+    const response = await request(app)
+      .delete(url)
+      .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(200);
   });
