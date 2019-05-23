@@ -234,11 +234,11 @@ export async function makeAdmin(req, res): Promise<Response> {
 export async function activate(req: Request, res: Response) {
   try {
     const { token } = req.params;
-    // TODO add a join to get the user with the token
     const t = await getConnection()
-      .createQueryBuilder()
-      .select("token")
-      .from(ActivationToken, "token")
+      .getRepository(ActivationToken)
+      .createQueryBuilder("token")
+      .leftJoinAndSelect("token.user", "user")
+      .select()
       .where(`token.token = :token`, { token })
       .getOne();
 
