@@ -42,7 +42,6 @@ export function sendTokenEmail(email: string, token: string) {
     html: `<html><body>Click here to validate your account <a href=${url}>${url}</a> </body></html>`
   };
   mg.messages().send(data, function(error, body) {
-    console.log(body);
     console.log(error);
   });
 }

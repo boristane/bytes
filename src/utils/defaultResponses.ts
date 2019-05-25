@@ -1,13 +1,16 @@
 import { Response } from "express";
+import messenger from "./slack";
 
 /**
  * Internal server error
  */
 export function send500(res: Response, err) {
   const time = new Date();
-  console.error(`${time.toUTCString()}: Internal server error: ${err.stack}`);
+  const text = `${time.toUTCString()}: Internal server error: ${err.stack}`;
+  console.error(text);
+  messenger(`☠️ ${text}`);
   return res.status(500).json({
-    error: err
+    error: err.stack
   });
 }
 

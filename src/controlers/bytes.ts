@@ -5,6 +5,7 @@ import { Byte } from "../entity/Byte";
 import { auth } from "../auth/checkAuth";
 import { getUserBy, getTagBy, getByteBy } from "../utils/utils";
 import { Tag } from "../entity/Tag";
+import messenger from "../utils/slack";
 
 export async function getMany(req: Request, res: Response): Promise<Response> {
   try {
@@ -111,6 +112,8 @@ export async function post(req: Request, res: Response): Promise<Response> {
         url: `${process.env.URL}/byte/${result.raw[0].id}`
       }
     };
+
+    messenger(`✔️ New byte posted: *${title}*`);
 
     return res.status(200).json(response);
   } catch (err) {
