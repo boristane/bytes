@@ -38,56 +38,70 @@ async function makeUserActive(email: string) {
     .execute();
 }
 
-// describe("bytes listing", () => {
-//   it("should list the first 10 bytes on page 1", async () => {
-//     const params = {
-//       page: 1
-//     };
-//     const url = buildUrl("/byte/", params);
-//     const page1Bytes = bytes
-//       .slice(0, 10)
-//       .map(byte => byte.title)
-//       .sort();
-//     const response = await request(app).get(url);
-//     const actual = response.body.bytes.map(byte => byte.title).sort();
-//     expect(response.status).toBe(200);
-//     expect(response.body.count).toBe(10);
-//     expect(actual).toEqual(page1Bytes);
-//   });
-
-//   it("should list the second page", async () => {
-//     const params = {
-//       page: 2
-//     };
-//     const url = buildUrl("/byte/", params);
-//     const page2Bytes = bytes
-//       .slice(10, 20)
-//       .map(byte => byte.title)
-//       .sort();
-//     const response = await request(app).get(url);
-//     const actual = response.body.bytes.map(byte => byte.title).sort();
-//     expect(response.status).toBe(200);
-//     expect(response.body.count).toBe(10);
-//     expect(actual).toEqual(page2Bytes);
-//   });
-
-//   it("should list the last page", async () => {
-//     const params = {
-//       page: 3
-//     };
-//     const url = buildUrl("/byte/", params);
-//     const page3Bytes = bytes
-//       .slice(20)
-//       .map(byte => byte.title)
-//       .sort();
-//     const response = await request(app).get(url);
-//     expect(response.status).toBe(200);
-//     expect(response.body.count).toBe(page3Bytes.length);
-//     const actual = response.body.bytes.map(byte => byte.title).sort();
-
-//     expect(actual).toEqual(page3Bytes);
-//   });
-// });
+describe("bytes listing", () => {
+  // it("should list the first 10 bytes on page 1", async () => {
+  //   const params = {
+  //     page: 1
+  //   };
+  //   const url = buildUrl("/byte/list", params);
+  //   const page1Bytes = bytes
+  //     .slice(0, 10)
+  //     .map(byte => byte.title)
+  //     .sort();
+  //   const response = await request(app).get(url);
+  //   const actual = response.body.bytes.map(byte => byte.title).sort();
+  //   expect(response.status).toBe(200);
+  //   expect(response.body.count).toBe(10);
+  //   expect(actual).toEqual(page1Bytes);
+  // });
+  // it("should list the second page", async () => {
+  //   const params = {
+  //     page: 2
+  //   };
+  //   const url = buildUrl("/byte/list", params);
+  //   const page2Bytes = bytes
+  //     .slice(10, 20)
+  //     .map(byte => byte.title)
+  //     .sort();
+  //   const response = await request(app).get(url);
+  //   const actual = response.body.bytes.map(byte => byte.title).sort();
+  //   expect(response.status).toBe(200);
+  //   expect(response.body.count).toBe(10);
+  //   expect(actual).toEqual(page2Bytes);
+  // });
+  // it("should list the last page", async () => {
+  //   const params = {
+  //     page: 3
+  //   };
+  //   const url = buildUrl("/byte/list", params);
+  //   const page3Bytes = bytes
+  //     .slice(20)
+  //     .map(byte => byte.title)
+  //     .sort();
+  //   const response = await request(app).get(url);
+  //   expect(response.status).toBe(200);
+  //   expect(response.body.count).toBe(page3Bytes.length);
+  //   const actual = response.body.bytes.map(byte => byte.title).sort();
+  //   expect(actual).toEqual(page3Bytes);
+  // });
+  it("should get a byte by title", async () => {
+    const params = {
+      title: bytes[0].title
+    };
+    const url = buildUrl("/byte/", params);
+    const response = await request(app).get(url);
+    expect(response.status).toBe(200);
+    expect(response.body.byte.title).toEqual(bytes[0].title);
+  });
+  it("should respond with 404 when getting a fake byte", async () => {
+    const params = {
+      title: "non existing byte"
+    };
+    const url = buildUrl("/byte/", params);
+    const response = await request(app).get(url);
+    expect(response.status).toBe(404);
+  });
+});
 
 describe("byte posting", () => {
   it("should not post a byte by a non-activated user", async () => {
