@@ -158,19 +158,23 @@ export async function del(req: Request, res: Response): Promise<Response> {
 }
 
 export async function getOne(req: Request, res: Response) {
-  const { title } = req.query;
-  const byte = await getByteBy("title", title);
-  if (byte === undefined) {
-    return send404(res);
-  }
-  const response = {
-    message: "Byte found.",
-    byte,
-    request: {
-      type: "GET",
-      url: `${process.env.URL}/byte/`
+  try {
+    const { title } = req.query;
+    const byte = await getByteBy("title", title);
+    if (byte === undefined) {
+      return send404(res);
     }
-  };
+    const response = {
+      message: "Byte found.",
+      byte,
+      request: {
+        type: "GET",
+        url: `${process.env.URL}/byte/`
+      }
+    };
 
-  return res.status(200).json(response);
+    return res.status(200).json(response);
+  } catch (err) {
+    send500(res, err);
+  }
 }

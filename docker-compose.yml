@@ -1,0 +1,36 @@
+version: "3.3"
+
+services:
+  bytes:
+    container_name: bytes
+    build: .
+    volumes:
+      - .:/bytes
+    networks:
+      bytes-dev:
+        aliases:
+          - bytes-host
+    command: ["bash", "-c", "tail -f /dev/null"]
+    depends_on: ["postgres"]
+    environment:
+      PGPASSWORD: password
+      PGUSER: postgres
+      PGPORT: 5432
+      PGHOST: database-host
+      PGDATABASE: bytes
+      PORT: 3333
+  postgres:
+    container_name: postgres
+    image: postgres:11
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+    ports:
+      - 5432:5432
+    networks:
+      bytes-dev:
+        aliases:
+          - database-host
+networks:
+  bytes-dev:
+    external: false
