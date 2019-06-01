@@ -29,7 +29,6 @@ defaults: &defaults
   docker:
     - image: circleci/node:chakracore-8.11
       environment:
-        PGUSER: postgres
         PGPORT: 5432
         PGDATABASE: bytes
         PGUSER: postgres
