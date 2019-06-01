@@ -29,11 +29,11 @@ defaults: &defaults
   docker:
     - image: circleci/node:chakracore-8.11
       environment:
-        PGHOST: 127.0.0.1
         PGUSER: postgres
         PGPORT: 5432
         PGDATABASE: bytes
         PGUSER: postgres
+        PGHOST: 127.0.0.1
         PGPASSWORD: password
         ENV: dev
         JWT_KEY: key
