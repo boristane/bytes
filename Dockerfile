@@ -1,6 +1,6 @@
 FROM node:8
 
-WORKDIR /usr/src/app
+WORKDIR bytes
 COPY package*.json ./
 
 RUN npm install

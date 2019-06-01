@@ -24,6 +24,6 @@ router.get("/", getOne);
 
 router.delete("/", auth, del);
 
-router.post("/activate/:token", activate);
+router.get("/activate/:token", activate);
 
 export default router;

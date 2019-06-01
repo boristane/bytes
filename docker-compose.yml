@@ -5,13 +5,15 @@ services:
     container_name: bytes
     build: .
     volumes:
-      - .:/bytes
+      - $PWD:/bytes
     networks:
       bytes-dev:
         aliases:
           - bytes-host
     command: ["bash", "-c", "tail -f /dev/null"]
     depends_on: ["postgres"]
+    ports:
+      - 3333:3333
     environment:
       PGPASSWORD: password
       PGUSER: postgres

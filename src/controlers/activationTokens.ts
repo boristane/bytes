@@ -32,16 +32,25 @@ export async function createToken(user: User) {
 }
 
 export function sendTokenEmail(email: string, token: string) {
+  if (process.env.ENV !== "prod") {
+    return;
+  }
   const DOMAIN = process.env.DOMAIN;
-  const mg = mailgun({ apiKey: process.env.MAILGUN_KEY, domain: DOMAIN });
-  const url = `${process.env.URL}/activate/${token}`;
+  const mg = mailgun({
+    apiKey: process.env.MAILGUN_KEY,
+    domain: DOMAIN,
+    host: "api.eu.mailgun.net"
+  });
+  const url = `${process.env.URL}:${process.env.PORT}/user/activate/${token}`;
   const data = {
-    from: "Derek Dirk <boris@mail.boristane.com>",
-    to: `${email}, boris@mail.boristane.com`,
+    from: "Boris <boris@mail.boristane.com>",
+    to: `${email}, boris.tane@gmail.com`,
     subject: "Validate your account",
-    html: `<html><body>Click here to validate your account <a href=${url}>${url}</a> </body></html>`
+    html: `<html><body>Click here to validate your account: <a href=${url}>${url}</a> </body></html>`
   };
   mg.messages().send(data, function(error, body) {
-    console.log(error);
+    if (error) {
+      console.error(error);
+    }
   });
 }
