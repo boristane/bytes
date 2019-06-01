@@ -13,14 +13,14 @@ services:
     command: ["bash", "-c", "tail -f /dev/null"]
     depends_on: ["postgres"]
     ports:
-      - 3333:3333
+      - 80:80
     environment:
       PGPASSWORD: password
       PGUSER: postgres
       PGPORT: 5432
       PGHOST: database-host
       PGDATABASE: bytes
-      PORT: 3333
+      PORT: 80
   postgres:
     container_name: postgres
     image: postgres:11

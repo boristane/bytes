@@ -54,7 +54,6 @@ jobs:
       - run: sudo apt-get install libpq-dev
       - run: npm install
       - run: npm install npx
-      - run: npx ts-node ./test/utils/setup-db.ts
       - save_cache: *save_cache
       - *persist_to_workspace
   "User Tests":
@@ -62,6 +61,7 @@ jobs:
     steps:
       - checkout
       - *attach_workspace
+      - run: npx ts-node ./test/utils/setup-db.ts
       - run: npm run test-users
       - *persist_to_workspace
   "Byte Tests":
@@ -69,6 +69,7 @@ jobs:
     steps:
       - checkout
       - *attach_workspace
+      - run: npx ts-node ./test/utils/setup-db.ts
       - run: npm run test-bytes
       - *persist_to_workspace
   "Unit Tests":
