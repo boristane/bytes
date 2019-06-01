@@ -25,6 +25,8 @@ jobs:
 
       - run: npm install
 
+      - run: npm install npx
+
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
 
       - save_cache:
