@@ -7,6 +7,10 @@ const router = express.Router();
 
 router.get("/list", getMany);
 router.get("/", getOne);
-router.post("/", auth, upload, post);
+if (process.env.ENV === "prod") {
+  router.post("/", auth, upload, post);
+} else {
+  router.post("/", auth, post);
+}
 router.delete("/", auth, del);
 export default router;

@@ -1,6 +1,7 @@
 import aws from "aws-sdk";
 import multerS3 from "multer-s3";
 import multer from "multer";
+import { RequestHandler } from "express";
 require("dotenv").config();
 
 const s3 = new aws.S3();
@@ -34,7 +35,7 @@ const limits = {
   fileSize: 1024 * 1024 * 5
 };
 
-const upload = multer({ storage, limits, fileFilter }).fields([
+const upload: RequestHandler = multer({ storage, limits, fileFilter }).fields([
   { name: "body", maxCount: 1 },
   { name: "image", maxCount: 1 }
 ]);

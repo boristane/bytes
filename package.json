@@ -1,10 +1,12 @@
 {
   "name": "bytes",
   "version": "1.0.0",
-  "description": "A collection of regular small blog posts",
+  "description": "A collection of regular small blog posts.",
   "main": "index.ts",
   "scripts": {
-    "test": "npx jest --detectOpenHandles",
+    "test-bytes": "npx jest ./test/integration/bytes.integration.test.ts --detectOpenHandles",
+    "test-users": "npx jest ./test/integration/users.integration.test.ts --detectOpenHandles",
+    "test-unit": "npx jest ./test/unit/* --detectOpenHandles",
     "watch": "tsc --watch",
     "start": "npx ts-node index.ts",
     "dev": "nodemon index.ts"

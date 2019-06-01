@@ -1,44 +1,90 @@
+aliases:
+  - &attach_workspace
+    attach_workspace:
+      at: .
+
+  - &persist_to_workspace
+    persist_to_workspace:
+      root: .
+      paths:
+        - .
+  - &restore_cache
+    keys:
+      - v1-dependencies-{{ checksum "package.json" }}
+      - v1-dependencies-
+
+  - &save_cache
+    paths:
+      - node_modules
+    key: v1-dependencies-{{ checksum "package.json" }}
+
+  - &filter-only-master
+    branches:
+      only:
+        - master
+
+# Build environment
+defaults: &defaults
+  working_directory:
+  docker:
+    - image: circleci/node:latest
+      environment:
+        PGHOST: 127.0.0.1
+        PGUSER: postgres
+        ENV: dev
+    - image: circleci/postgres:9.6.2-alpine
+      environment:
+        POSTGRES_DB: bytes
+        POSTGRES_PASSWORD: password
+        POSTGRES_USER: postgres
+        JWT_KEY: key
+        PORT: 80
+        ENV: dev
+
 version: 2
 jobs:
-  test:
-    docker:
-      - image: circleci/node:latest
-        environment:
-          PGHOST: 127.0.0.1
-          PGUSER: postgres
-          ENV: dev
-      - image: circleci/postgres:9.6.2-alpine
-        environment:
-          POSTGRES_DB: bytes
-          POSTGRES_PASSWORD: password
-          POSTGRES_USER: postgres
-
-    working_directory: ~/repo
-
+  "Install":
+    <<: *defaults
     steps:
       - checkout
-
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-
+      - *attach_workspace
+      - restore_cache: *restore_cache
       - run: npm install
-
       - run: npm install npx
-
-      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: npm run test
+      - save_cache: *save_cache
+      - *persist_to_workspace
+  "User Tests":
+    <<: *defaults
+    steps:
+      - checkout
+      - *attach_workspace
+      - run: npm run test-users
+      - *persist_to_workspace
+  "Byte Tests":
+    <<: *defaults
+    steps:
+      - checkout
+      - *attach_workspace
+      - run: npm run test-bytes
+      - *persist_to_workspace
+  "Unit Tests":
+    <<: *defaults
+    steps:
+      - checkout
+      - *attach_workspace
+      - run: npm run test-unit
+      - *persist_to_workspace
 
 workflows:
   version: 2
   test:
     jobs:
-      - test
+      - "Install"
+      - "User Tests":
+        requires:
+          - "Install"
+      - "Byte Tests":
+          requires:
+            - "User Tests"
+      - "Unit Tests":
+        requires: "Install"
