@@ -50,7 +50,7 @@ jobs:
     steps:
       - checkout
       - *attach_workspace
-      - restore_cache: *restore_cache
+      # - restore_cache: *restore_cache
       - run: sudo apt-get install libpq-dev
       - run: npm install
       - run: npm install npx
