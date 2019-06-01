@@ -1,5 +1,5 @@
 import * as pg from "pg";
-import { hashSync, hash } from "bcrypt";
+import { hashSync, hash } from "bcryptjs";
 import { getConnection } from "typeorm";
 import { User } from "../../src/entity/User";
 import { Tag } from "../../src/entity/Tag";

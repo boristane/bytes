@@ -65,8 +65,9 @@ async function saveTags(tags: Tag[]) {
 export async function post(req: Request, res: Response): Promise<Response> {
   try {
     const { title } = req.body;
-    const body = req.files["body"][0].location;
-    const image = req.files["image"][0].location;
+    const filesFieldname = process.env.ENV === "prod" ? "location" : "path";
+    const body = req.files["body"][0][filesFieldname];
+    const image = req.files["image"][0][filesFieldname];
     const tagsStrings = req.body["tags"].split(",").map(tag => tag.trim());
     const token = req.headers.authorization.split(" ")[1];
     const authorEmail = auth(token);

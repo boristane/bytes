@@ -2,7 +2,7 @@ import { getRepository, getConnection } from "typeorm";
 import { User } from "../entity/User";
 import { Request, Response } from "express";
 import { send500, send404, send401, send403 } from "../utils/defaultResponses";
-import { hash, compare } from "bcrypt";
+import { hash, compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import { auth } from "../auth/checkAuth";
 import { getUserBy } from "../utils/utils";
