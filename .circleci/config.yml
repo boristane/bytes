@@ -27,7 +27,7 @@ aliases:
 defaults: &defaults
   working_directory:
   docker:
-    - image: circleci/node:latest
+    - image: circleci/node:current
       environment:
         PGHOST: 127.0.0.1
         PGUSER: postgres
@@ -50,6 +50,7 @@ jobs:
       - *attach_workspace
       - restore_cache: *restore_cache
       - run: sudo apt-get install libpq-dev
+      - run: node -v
       - run: npm install
       - run: npm install npx
       - save_cache: *save_cache
