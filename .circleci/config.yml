@@ -27,7 +27,7 @@ aliases:
 defaults: &defaults
   working_directory:
   docker:
-    - image: circleci/node:chakracore-8.11
+    - image: circleci/node:chakracore-10.13
       environment:
         PGPORT: 5432
         PGDATABASE: bytes

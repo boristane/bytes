@@ -28,6 +28,7 @@ async function main() {
   const connection = await createConnectionToDB();
   await connection.synchronize(true);
   await connection.close();
+  console.log("Database initialised.");
 }
 
 main();
