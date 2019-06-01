@@ -81,10 +81,11 @@ workflows:
     jobs:
       - "Install"
       - "User Tests":
-        requires:
-          - "Install"
+          requires:
+            - "Install"
       - "Byte Tests":
           requires:
             - "User Tests"
       - "Unit Tests":
-        requires: "Install"
+          requires:
+            - "Install"
