@@ -2,16 +2,13 @@ import { Connection, getConnection } from "typeorm";
 import { app } from "../../src/server";
 import request from "supertest";
 import createConnectionToDB from "../../src/utils/createConnectionToDB";
-import { insertUsers, insertTags, insertBytes } from "../utils/insertToDB";
-import { removeAllFromDB, removeTableFromDB } from "../utils/removeAllFromDB";
 import users from "../fixtures/users.json";
-import tags from "../fixtures/tags.json";
 import bytes from "../fixtures/bytes.json";
 import { sign } from "jsonwebtoken";
 import buildUrl from "../utils/buildURL";
 import { promisify } from "util";
 import { User } from "../../src/entity/User";
-import { getUserBy } from "../../src/utils/utils";
+import setupDB from "../utils/setup-db";
 require("dotenv").config();
 
 jest.setTimeout(15000);
@@ -21,12 +18,9 @@ let sleep = promisify(setTimeout);
 let connection: Connection;
 
 beforeAll(async () => {
+  await setupDB();
+  sleep(2000);
   connection = await createConnectionToDB();
-  await removeAllFromDB();
-  await insertUsers(users);
-  await insertTags(tags);
-  await insertBytes(bytes);
-  await sleep(2000);
 });
 
 async function makeUserActive(email: string) {
@@ -84,21 +78,14 @@ describe("bytes listing", () => {
   //   const actual = response.body.bytes.map(byte => byte.title).sort();
   //   expect(actual).toEqual(page3Bytes);
   // });
-  it("should get a byte by title", async () => {
-    const params = {
-      title: bytes[0].title
-    };
-    const url = buildUrl("/byte/", params);
-    const response = await request(app).get(url);
+  it("should get a byte by id", async () => {
+    const id = 1;
+    const response = await request(app).get(`/byte/${id}`);
     expect(response.status).toBe(200);
-    expect(response.body.byte.title).toEqual(bytes[0].title);
   });
   it("should respond with 404 when getting a fake byte", async () => {
-    const params = {
-      title: "non existing byte"
-    };
-    const url = buildUrl("/byte/", params);
-    const response = await request(app).get(url);
+    const id = 0;
+    const response = await request(app).get(`/byte/${id}`);
     expect(response.status).toBe(404);
   });
 });
@@ -164,7 +151,7 @@ describe("delete", () => {
   });
 
   it("should succesfully delete a byte", async () => {
-    const title = bytes[0].title;
+    const title = bytes[15].title;
     const params = {
       title
     };

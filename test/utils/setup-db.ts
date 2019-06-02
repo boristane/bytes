@@ -34,7 +34,7 @@ async function populateDB() {
   await insertBytes(bytes);
 }
 
-async function main() {
+export default async function main() {
   const connection = await createConnectionToDB();
   await connection.synchronize(true);
   console.log("Database initialised.");
@@ -42,5 +42,3 @@ async function main() {
   console.log("Database populated.");
   await connection.close();
 }
-
-main();

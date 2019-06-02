@@ -3,19 +3,32 @@ import { app } from "../../src/server";
 import request from "supertest";
 import createConnectionToDB from "../../src/utils/createConnectionToDB";
 import { insertUsers } from "../utils/insertToDB";
-import { removeAllFromDB } from "../utils/removeAllFromDB";
+import { removeUsersFromDB } from "../utils/removeAllFromDB";
 import users from "../fixtures/users.json";
 import { sign } from "jsonwebtoken";
 import buildUrl from "../utils/buildURL";
+import setupDB from "../utils/setup-db";
+import { promisify } from "util";
+require("dotenv").config();
+
+jest.setTimeout(15000);
+
+let sleep = promisify(setTimeout);
 
 let connection: Connection;
 
 beforeAll(async () => {
+  await setupDB();
+  sleep(2000);
   connection = await createConnectionToDB();
 });
 
 beforeEach(async () => {
-  await removeAllFromDB();
+  await removeUsersFromDB();
+  await insertUsers(users);
+});
+
+afterAll(async () => {
   await insertUsers(users);
 });
 

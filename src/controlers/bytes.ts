@@ -160,17 +160,37 @@ export async function del(req: Request, res: Response): Promise<Response> {
 
 export async function getOne(req: Request, res: Response) {
   try {
-    const { title } = req.query;
-    const byte = await getByteBy("title", title);
-    if (byte === undefined) {
+    const { id } = req.params;
+    const byteRepo = getRepository(Byte);
+    const result = await byteRepo
+      .createQueryBuilder("byte")
+      .leftJoinAndSelect("byte.author", "author")
+      .select()
+      .where(`byte.id = :id`, { id })
+      .getOne();
+    if (result === undefined) {
       return send404(res);
     }
+
+    const byte = {
+      id: result.id,
+      title: result.title,
+      created: result.created,
+      updated: result.updated,
+      image: result.image,
+      body: result.body,
+      tags: result.tags,
+      author: {
+        name: result.author.name
+      }
+    };
+
     const response = {
       message: "Byte found.",
       byte,
       request: {
         type: "GET",
-        url: `${process.env.URL}/byte/`
+        url: `${process.env.URL}/byte/list`
       }
     };
 

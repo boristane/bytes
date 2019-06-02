@@ -6,7 +6,7 @@ import auth from "../auth/checkAuth";
 const router = express.Router();
 
 router.get("/list", getMany);
-router.get("/", getOne);
+router.get("/:id", getOne);
 router.post("/", auth, upload, post);
 router.delete("/", auth, del);
 export default router;

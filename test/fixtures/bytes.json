@@ -1,6 +1,6 @@
 [
   {
-    "title": "that first day...",
+    "title": "that 1st day...",
     "image": "image1.jpeg",
     "body": "text1.md",
     "tags": [
@@ -10,7 +10,7 @@
     "author": 1
   },
   {
-    "title": "that second day...",
+    "title": "that 2nd day...",
     "image": "image2.jpeg",
     "body": "text2.md",
     "tags": [
@@ -20,7 +20,7 @@
     "author": 1
   },
   {
-    "title": "that third day...",
+    "title": "that 3rd day...",
     "image": "image3.jpeg",
     "body": "text3.md",
     "tags": [
@@ -31,7 +31,7 @@
     "author": 1
   },
   {
-    "title": "that fourth day...",
+    "title": "that 4th day...",
     "image": "image4.jpeg",
     "body": "text4.md",
     "tags": [
@@ -41,7 +41,7 @@
     "author": 1
   },
   {
-    "title": "that fifth day...",
+    "title": "that 5th day...",
     "image": "image5.jpeg",
     "body": "text5.md",
     "tags": [
@@ -118,7 +118,7 @@
     "author": 1
   },
   {
-    "title": "that 13 day...",
+    "title": "that 13th day...",
     "image": "image13.jpeg",
     "body": "text14.md",
     "tags": [
