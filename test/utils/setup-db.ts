@@ -1,4 +1,8 @@
 import createConnectionToDB from "../../src/utils/createConnectionToDB";
+import users from "../fixtures/users.json";
+import tags from "../fixtures/tags.json";
+import bytes from "../fixtures/bytes.json";
+import { insertUsers, insertTags, insertBytes } from "./insertToDB";
 
 const expectedEnvVariables = [
   "PGHOST",
@@ -24,11 +28,19 @@ if (missingEnvVariables.length >= 1) {
   process.exit(1);
 }
 
+async function populateDB() {
+  await insertUsers(users);
+  await insertTags(tags);
+  await insertBytes(bytes);
+}
+
 async function main() {
   const connection = await createConnectionToDB();
   await connection.synchronize(true);
-  await connection.close();
   console.log("Database initialised.");
+  await populateDB();
+  console.log("Database populated.");
+  await connection.close();
 }
 
 main();

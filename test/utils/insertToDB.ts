@@ -1,19 +1,13 @@
 import * as pg from "pg";
 import { hashSync, hash } from "bcryptjs";
-import { getConnection } from "typeorm";
+import { getConnection, getCustomRepository } from "typeorm";
 import { User } from "../../src/entity/User";
 import { Tag } from "../../src/entity/Tag";
 import { Byte } from "../../src/entity/Byte";
 import { getUserBy } from "../../src/utils/utils";
+require("dotenv").config();
 
-export function insertUsers(
-  users: Array<{
-    name: string;
-    admin: boolean;
-    password: string;
-    email: string;
-  }>
-) {
+export function insertUsers(users: Array<IUser>) {
   const promises = users.map(async (user, index) => {
     const saltRounds = 10;
     const hashedPassword = await hash(user.password, saltRounds);
@@ -58,7 +52,15 @@ export function insertTags(tags: string[]) {
   return Promise.all(promises);
 }
 
-export function insertBytes(bytes: Array<IByte>) {
+function getUsersForBytes(bytes: Array<IByte>): Promise<User[]> {
+  const promises = bytes.map(byte => {
+    return getUserBy("id", byte.author);
+  });
+  return Promise.all(promises);
+}
+
+export async function insertBytes(bytes: Array<IByte>) {
+  const users: User[] = await getUsersForBytes(bytes);
   const promises = bytes.map(async (obj, index) => {
     const t = obj.tags;
     const byte: Byte = {
@@ -67,7 +69,7 @@ export function insertBytes(bytes: Array<IByte>) {
       body: obj.body,
       created: new Date(new Date().getTime() + index * 6000),
       updated: new Date(new Date().getTime() + index * 6000),
-      author: await getUserBy("email", obj.author),
+      author: users[index],
       tags: []
     };
 
@@ -88,4 +90,11 @@ interface IByte {
   body: string;
   tags: Array<string>;
   author: number;
+}
+
+interface IUser {
+  name: string;
+  admin: boolean;
+  password: string;
+  email: string;
 }
