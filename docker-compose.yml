@@ -10,7 +10,7 @@ services:
       bytes-dev:
         aliases:
           - bytes-host
-    command: ["bash", "-c", "tail -f /dev/null"]
+    # command: ["bash", "-c", "tail -f /dev/null"]
     depends_on: ["postgres"]
     ports:
       - 80:80
@@ -33,6 +33,23 @@ services:
       bytes-dev:
         aliases:
           - database-host
+  bytes-frontend:
+    container_name: bytes-frontend
+    build: $PWD/../hello-next
+    volumes:
+      - $PWD/../hello-next:/bytes-frontend
+    networks:
+      bytes-dev:
+        aliases:
+          - bytes-frontend-host
+    command: ["bash", "-c", "tail -f /dev/null"]
+    depends_on: ["bytes"]
+    ports:
+      - 810:80
+    environment:
+      URL: ip-address
+      PORT: 80
+      NODE_ENV: dev
 networks:
   bytes-dev:
     external: false
