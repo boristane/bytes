@@ -115,6 +115,6 @@ workflows:
       - "Publish Image":
           requires:
             - User Tests
-            - Bytes Tests
+            - Byte Tests
             - Unit Tests
           filters: *filter-only-master
