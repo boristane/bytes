@@ -85,7 +85,6 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - *attach_workspace
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASS
       - run: echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
       - run: echo 'export IMAGE_NAME=bytes' >> $BASH_ENV
