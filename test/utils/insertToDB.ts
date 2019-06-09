@@ -67,8 +67,8 @@ export async function insertBytes(bytes: Array<IByte>) {
       title: obj.title,
       image: obj.image,
       body: obj.body,
-      created: new Date(new Date().getTime() + index * 6000),
-      updated: new Date(new Date().getTime() + index * 6000),
+      created: new Date(new Date().getTime() + index * 600000000),
+      updated: new Date(new Date().getTime() + index * 600000000),
       author: users[index],
       tags: []
     };

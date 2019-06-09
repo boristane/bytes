@@ -126,11 +126,8 @@ describe("byte posting", () => {
 
 describe("delete", () => {
   it("should respond with 404 on non existing byte", async () => {
-    const title = "non-existing";
-    const params = {
-      title
-    };
-    const url = buildUrl("/byte/", params);
+    const id = 0;
+    const url = `/byte/${id}`;
     const token = sign(users[0].email, process.env.JWT_KEY);
     const response = await request(app)
       .delete(url)
@@ -140,11 +137,8 @@ describe("delete", () => {
   });
 
   it("should reject deletion on user without admin rights", async () => {
-    const title = bytes[0].title;
-    const params = {
-      title
-    };
-    const url = buildUrl("/byte/", params);
+    const id = 1;
+    const url = `/byte/${id}`;
     const nonAdmins = users.filter(user => !user.admin);
     const token = sign(nonAdmins[0].email, process.env.JWT_KEY);
 
@@ -156,11 +150,8 @@ describe("delete", () => {
   });
 
   it("should succesfully delete a byte", async () => {
-    const title = bytes[15].title;
-    const params = {
-      title
-    };
-    const url = buildUrl("/byte/", params);
+    const id = 16;
+    const url = `/byte/${id}`;
     const admins = users.filter(user => user.admin);
     const token = sign(admins[0].email, process.env.JWT_KEY);
 

@@ -123,11 +123,11 @@ export async function post(req: Request, res: Response): Promise<Response> {
 }
 
 export async function del(req: Request, res: Response): Promise<Response> {
-  const { title } = req.query;
+  const { id } = req.params;
   const token = req.headers.authorization.split(" ")[1];
   const email = auth(token);
   try {
-    const byteToDelete = await getByteBy("title", title);
+    const byteToDelete = await getByteBy("id", id);
     if (!byteToDelete) {
       return send404(res);
     }
@@ -142,7 +142,7 @@ export async function del(req: Request, res: Response): Promise<Response> {
       .createQueryBuilder()
       .delete()
       .from(Byte)
-      .where("title = :title", { title })
+      .where("id = :id", { id })
       .execute();
 
     return res.status(200).json({

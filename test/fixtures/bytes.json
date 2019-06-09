@@ -1,8 +1,8 @@
 [
   {
     "title": "that 1st day...",
-    "image": "image1.jpeg",
-    "body": "text1.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/1.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/1.md",
     "tags": [
       "philosophies",
       "anime"
@@ -11,8 +11,8 @@
   },
   {
     "title": "that 2nd day...",
-    "image": "image2.jpeg",
-    "body": "text2.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/2.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/2.md",
     "tags": [
       "philosophies",
       "anime"
@@ -21,8 +21,8 @@
   },
   {
     "title": "that 3rd day...",
-    "image": "image3.jpeg",
-    "body": "text3.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/3.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/3.md",
     "tags": [
       "philosophies",
       "anime",
@@ -32,8 +32,8 @@
   },
   {
     "title": "that 4th day...",
-    "image": "image4.jpeg",
-    "body": "text4.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/4.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/4.md",
     "tags": [
       "philosophies",
       "anime"
@@ -42,8 +42,8 @@
   },
   {
     "title": "that 5th day...",
-    "image": "image5.jpeg",
-    "body": "text5.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/5.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/5.md",
     "tags": [
       "philosophies",
       "anime"
@@ -52,8 +52,8 @@
   },
   {
     "title": "that 6th day...",
-    "image": "image6.jpeg",
-    "body": "text6.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/6.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/6.md",
     "tags": [
       "philosophies",
       "anime"
@@ -62,8 +62,8 @@
   },
   {
     "title": "that 7th day...",
-    "image": "image7.jpeg",
-    "body": "text7.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/7.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/7.md",
     "tags": [
       "philosophies",
       "anime"
@@ -72,8 +72,8 @@
   },
   {
     "title": "that 8th day...",
-    "image": "image8.jpeg",
-    "body": "text8.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/8.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/8.md",
     "tags": [
       "philosophies",
       "anime"
@@ -82,8 +82,8 @@
   },
   {
     "title": "that 9th day...",
-    "image": "image9.jpeg",
-    "body": "text9.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/9.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/9.md",
     "tags": [
       "religion",
       "software"
@@ -92,8 +92,8 @@
   },
   {
     "title": "that 10th day...",
-    "image": "image10.jpeg",
-    "body": "text10.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/10.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/10.md",
     "tags": [
       "philosophies",
       "anime"
@@ -102,8 +102,8 @@
   },
   {
     "title": "that 11th day...",
-    "image": "image11.jpeg",
-    "body": "text11.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/11.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/11.md",
     "tags": [
       "philosophies",
       "anime"
@@ -112,15 +112,15 @@
   },
   {
     "title": "that 12th day...",
-    "image": "image12.jpeg",
-    "body": "text12.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/12.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/12.md",
     "tags": [],
     "author": 1
   },
   {
     "title": "that 13th day...",
-    "image": "image13.jpeg",
-    "body": "text13.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/13.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/13.md",
     "tags": [
       "philosophies",
       "anime"
@@ -129,8 +129,8 @@
   },
   {
     "title": "that 14th day...",
-    "image": "image14.jpeg",
-    "body": "text14.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/14.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/14.md",
     "tags": [
       "philosophies",
       "anime"
@@ -139,8 +139,8 @@
   },
   {
     "title": "that 15th day...",
-    "image": "image15.jpeg",
-    "body": "text15.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/15.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/15.md",
     "tags": [
       "anime",
       "music"
@@ -149,8 +149,8 @@
   },
   {
     "title": "that 16th day...",
-    "image": "image16.jpeg",
-    "body": "text16.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/16.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/16.md",
     "tags": [
       "philosophies",
       "anime"
@@ -159,8 +159,8 @@
   },
   {
     "title": "that 17th day...",
-    "image": "image17.jpeg",
-    "body": "text17.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/17.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/17.md",
     "tags": [
       "philosophies",
       "anime"
@@ -169,15 +169,15 @@
   },
   {
     "title": "that 18th day...",
-    "image": "image18.jpeg",
-    "body": "text18.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/18.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/18.md",
     "tags": [],
     "author": 1
   },
   {
     "title": "that 19th day...",
-    "image": "image19.jpeg",
-    "body": "text19.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/19.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/19.md",
     "tags": [
       "juice",
       "ai"
@@ -186,8 +186,8 @@
   },
   {
     "title": "that 20th day...",
-    "image": "image20.jpeg",
-    "body": "text20.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/20.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/20.md",
     "tags": [
       "philosophies",
       "anime"
@@ -196,8 +196,8 @@
   },
   {
     "title": "that 21st day...",
-    "image": "image21.jpeg",
-    "body": "text21.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/21.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/21.md",
     "tags": [
       "philosophies",
       "anime"
@@ -206,8 +206,8 @@
   },
   {
     "title": "that 22nd day...",
-    "image": "image22.jpeg",
-    "body": "text22.md",
+    "image": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/22.png",
+    "body": "https://boristane-bytes-data.s3.eu-west-2.amazonaws.com/test-data/22.md",
     "tags": [
       "philosophies",
       "anime"

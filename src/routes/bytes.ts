@@ -9,5 +9,5 @@ router.get("/list", getMany);
 router.get("/count", count);
 router.get("/:id", getOne);
 router.post("/", auth, upload, post);
-router.delete("/", auth, del);
+router.delete("/:id", auth, del);
 export default router;
