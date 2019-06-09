@@ -154,6 +154,7 @@ describe("delete", () => {
     const url = `/byte/${id}`;
     const admins = users.filter(user => user.admin);
     const token = sign(admins[0].email, process.env.JWT_KEY);
+    await makeUserActive(admins[0].email);
 
     const response = await request(app)
       .delete(url)
