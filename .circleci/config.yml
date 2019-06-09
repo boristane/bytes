@@ -79,6 +79,24 @@ jobs:
       - *attach_workspace
       - run: npm run test-unit
       - *persist_to_workspace
+  "Publish Image":
+    <<: *defaults
+    steps:
+      - checkout
+      - *attach_workspace
+      - run:
+        name: Sets the image name and tag
+        command: |
+          echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+          echo 'export IMAGE_NAME=bytes' >> $BASH_ENV
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build and push Docker image
+          command: |
+            docker build -t boristane/$IMAGE_NAME:$TAG .
+            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
+            docker push boristane/$IMAGE_NAME:$TAG
 
 workflows:
   version: 2
@@ -94,3 +112,9 @@ workflows:
       - "Unit Tests":
           requires:
             - "Install"
+      - "Publish Image":
+          requires:
+            - User Tests
+            - Bytes Tests
+            - Unit Tests
+          *filter-only-master

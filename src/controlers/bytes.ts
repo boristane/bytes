@@ -133,7 +133,7 @@ export async function del(req: Request, res: Response): Promise<Response> {
     }
 
     const user = await getUserBy("email", email);
-    if (!user.admin) {
+    if (!user.admin || !user.activated) {
       return send403(res);
     }
 
