@@ -47,7 +47,7 @@ services:
     ports:
       - 810:80
     environment:
-      URL: http://192.168.1.102
+      URL: hip-address
       PORT: 80
       NODE_ENV: dev
 networks:

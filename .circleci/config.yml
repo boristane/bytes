@@ -117,4 +117,4 @@ workflows:
             - User Tests
             - Bytes Tests
             - Unit Tests
-          *filter-only-master
+          filters: *filter-only-master
