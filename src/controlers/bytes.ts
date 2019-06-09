@@ -199,3 +199,27 @@ export async function getOne(req: Request, res: Response) {
     send500(res, err);
   }
 }
+
+export async function count(req: Request, res: Response) {
+  try {
+    const byteRepo = getRepository(Byte);
+
+    const { sum } = await byteRepo
+      .createQueryBuilder("byte")
+      .select("count(id)", "sum")
+      .getRawOne();
+
+    const response = {
+      message: "Byte count",
+      count: sum,
+      request: {
+        type: "GET",
+        url: `${process.env.URL}/byte/list`
+      }
+    };
+
+    return res.status(200).json(response);
+  } catch (err) {
+    send500(res, err);
+  }
+}

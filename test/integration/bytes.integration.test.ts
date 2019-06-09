@@ -88,6 +88,11 @@ describe("bytes listing", () => {
     const response = await request(app).get(`/byte/${id}`);
     expect(response.status).toBe(404);
   });
+  it("should count the number of bytes", async () => {
+    const response = await request(app).get("/byte/count/");
+    expect(response.status).toBe(200);
+    expect(parseInt(response.body.count, 10)).toBe(bytes.length);
+  });
 });
 
 describe("byte posting", () => {
