@@ -81,9 +81,10 @@ jobs:
       - *persist_to_workspace
   "Publish Image":
     <<: *defaults
-    machine: true
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - *attach_workspace
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASS
       - run: echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
