@@ -94,7 +94,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master          
+      - run: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 
 workflows:
   version: 2
@@ -116,8 +116,8 @@ workflows:
             - Byte Tests
             - Unit Tests
           filters: *filter-only-master
-      - "Deploy to Heroku"
-          requires: 
+      - "Deploy to Heroku":
+          requires:
             - User Tests
             - Byte Tests
             - Unit Tests
