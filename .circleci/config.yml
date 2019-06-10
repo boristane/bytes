@@ -90,6 +90,11 @@ jobs:
       - run: echo 'export IMAGE_NAME=bytes' >> $BASH_ENV
       - run: docker build -t boristane/$IMAGE_NAME:$TAG .
       - run: docker push boristane/$IMAGE_NAME:$TAG
+  "Deploy to Heroku":
+    <<: *defaults
+    steps:
+      - checkout
+      - run: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master          
 
 workflows:
   version: 2
@@ -107,6 +112,12 @@ workflows:
             - "Install"
       - "Publish Image":
           requires:
+            - User Tests
+            - Byte Tests
+            - Unit Tests
+          filters: *filter-only-master
+      - "Deploy to Heroku"
+          requires: 
             - User Tests
             - Byte Tests
             - Unit Tests
