@@ -101,7 +101,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: docker login --email=$HEROKU_LOGIN --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+      - run: docker login -u $HEROKU_LOGIN -p $HEROKU_API_KEY registry.heroku.com
       - run: echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
       - run: docker build --rm=false -t registry.heroku.com/$HEROKU_APP_NAME/web:$TAG .
       - run: docker push registry.heroku.com/$HEROKU_APP_NAME/web:$TAG
