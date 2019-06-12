@@ -6,6 +6,7 @@ import { auth } from "../auth/checkAuth";
 import { getUserBy, getTagBy, getByteBy } from "../utils/utils";
 import { Tag } from "../entity/Tag";
 import messenger from "../utils/slack";
+import { MulterFile } from "../types";
 
 export async function getMany(req: Request, res: Response): Promise<Response> {
   try {
@@ -62,7 +63,10 @@ async function saveTags(tags: Tag[]) {
   return Promise.all(promises);
 }
 
-export async function post(req: Request, res: Response): Promise<Response> {
+export async function post(
+  req: Request & { files: MulterFile[] },
+  res: Response
+): Promise<Response> {
   try {
     const { title } = req.body;
     const filesFieldname = process.env.ENV === "prod" ? "location" : "path";
