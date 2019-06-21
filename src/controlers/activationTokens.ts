@@ -41,7 +41,7 @@ export function sendTokenEmail(email: string, token: string) {
     domain: DOMAIN,
     host: "api.eu.mailgun.net"
   });
-  const url = `${process.env.URL}:${process.env.PORT}/user/activate/${token}`;
+  const url = `${process.env.URL}/user/activate/${token}`;
   const data = {
     from: "Boris <boris@mail.boristane.com>",
     to: `${email}, boris.tane@gmail.com`,
