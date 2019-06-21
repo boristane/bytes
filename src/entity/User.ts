@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn
+} from "typeorm";
 import { Byte } from "./Byte";
 import { IsEmail } from "class-validator";
 import { ActivationToken } from "./ActivationToken";
@@ -18,11 +25,11 @@ export class User {
   @IsEmail()
   email: string;
 
-  @Column({ type: "timestamp" })
-  updated: Date;
+  @CreateDateColumn()
+  created?: Date;
 
-  @Column({ type: "timestamp" })
-  created: Date;
+  @UpdateDateColumn()
+  updated?: Date;
 
   @Column({
     default: false

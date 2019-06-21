@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn
+} from "typeorm";
 
 @Entity()
 export class Tag {
@@ -8,6 +13,6 @@ export class Tag {
   @Column()
   name: string;
 
-  @Column({ type: "timestamp" })
-  created: Date;
+  @CreateDateColumn()
+  created?: Date;
 }

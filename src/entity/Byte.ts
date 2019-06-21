@@ -4,7 +4,9 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
-  ManyToOne
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn
 } from "typeorm";
 import { User } from "./User";
 import { Tag } from "./Tag";
@@ -30,9 +32,9 @@ export class Byte {
   @ManyToOne(type => User, author => author.bytes, { onDelete: "CASCADE" })
   author: User;
 
-  @Column({ type: "timestamp" })
-  created: Date;
+  @CreateDateColumn()
+  created?: Date;
 
-  @Column({ type: "timestamp" })
-  updated: Date;
+  @UpdateDateColumn()
+  updated?: Date;
 }
