@@ -37,7 +37,7 @@ describe("bytes listing", () => {
     const params = {
       page: 1
     };
-    const url = buildUrl("/byte/list", params);
+    const url = buildUrl("/api/byte/list", params);
     const page1Bytes = bytes
       .map(byte => byte.title)
       .reverse()
@@ -52,7 +52,7 @@ describe("bytes listing", () => {
     const params = {
       page: 2
     };
-    const url = buildUrl("/byte/list", params);
+    const url = buildUrl("/api/byte/list", params);
     const response = await request(app).get(url);
     const actual = response.body.bytes.map(byte => byte.title);
     const page2Bytes = bytes
@@ -67,7 +67,7 @@ describe("bytes listing", () => {
     const params = {
       page: 3
     };
-    const url = buildUrl("/byte/list", params);
+    const url = buildUrl("/api/byte/list", params);
     const page3Bytes = bytes
       .map(byte => byte.title)
       .reverse()
@@ -80,16 +80,16 @@ describe("bytes listing", () => {
   });
   it("should get a byte by id", async () => {
     const id = 1;
-    const response = await request(app).get(`/byte/${id}`);
+    const response = await request(app).get(`/api/byte/${id}`);
     expect(response.status).toBe(200);
   });
   it("should respond with 404 when getting a fake byte", async () => {
     const id = 0;
-    const response = await request(app).get(`/byte/${id}`);
+    const response = await request(app).get(`/api/byte/${id}`);
     expect(response.status).toBe(404);
   });
   it("should count the number of bytes", async () => {
-    const response = await request(app).get("/byte/count/");
+    const response = await request(app).get("/api/byte/count/");
     expect(response.status).toBe(200);
     expect(parseInt(response.body.count, 10)).toBe(bytes.length);
   });
@@ -127,7 +127,7 @@ describe("byte posting", () => {
 describe("delete", () => {
   it("should respond with 404 on non existing byte", async () => {
     const id = 0;
-    const url = `/byte/${id}`;
+    const url = `/api/byte/${id}`;
     const token = sign(users[0].email, process.env.JWT_KEY);
     const response = await request(app)
       .delete(url)
@@ -138,7 +138,7 @@ describe("delete", () => {
 
   it("should reject deletion on user without admin rights", async () => {
     const id = 1;
-    const url = `/byte/${id}`;
+    const url = `/api/byte/${id}`;
     const nonAdmins = users.filter(user => !user.admin);
     const token = sign(nonAdmins[0].email, process.env.JWT_KEY);
 
@@ -151,7 +151,7 @@ describe("delete", () => {
 
   it("should succesfully delete a byte", async () => {
     const id = 16;
-    const url = `/byte/${id}`;
+    const url = `/api/byte/${id}`;
     const admins = users.filter(user => user.admin);
     const token = sign(admins[0].email, process.env.JWT_KEY);
     await makeUserActive(admins[0].email);

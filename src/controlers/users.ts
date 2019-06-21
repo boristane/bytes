@@ -126,9 +126,9 @@ export async function login(req: Request, res: Response): Promise<Response> {
 }
 
 export async function getOne(req: Request, res: Response): Promise<Response> {
-  const { email: userEmail } = req.query;
+  const { id } = req.query;
   try {
-    const user = await getUserBy("email", userEmail);
+    const user = await getUserBy("id", id);
     if (!user) {
       return send404(res);
     }
