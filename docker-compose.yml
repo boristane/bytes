@@ -33,23 +33,6 @@ services:
       bytes-dev:
         aliases:
           - database-host
-  bytes-frontend:
-    container_name: bytes-frontend
-    build: $PWD/../bytes-frontend
-    volumes:
-      - $PWD/../bytes-frontend:/bytes-frontend
-    networks:
-      bytes-dev:
-        aliases:
-          - bytes-frontend-host
-    command: ["bash", "-c", "tail -f /dev/null"]
-    depends_on: ["bytes"]
-    ports:
-      - 810:80
-    environment:
-      URL: http://192.168.1.102
-      PORT: 80
-      NODE_ENV: dev
 networks:
   bytes-dev:
     external: false

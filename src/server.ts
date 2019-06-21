@@ -19,5 +19,5 @@ app.use((req, res, next) => {
   return next();
 });
 
-app.use("/user/", usersRouter);
-app.use("/byte/", bytesRouter);
+app.use("/api/user/", usersRouter);
+app.use("/api/byte/", bytesRouter);

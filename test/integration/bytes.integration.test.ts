@@ -99,7 +99,7 @@ describe("byte posting", () => {
   it("should not post a byte by a non-activated user", async () => {
     const token = sign(users[0].email, process.env.JWT_KEY);
     const response = await request(app)
-      .post("/byte/")
+      .post("/api/byte/")
       .set("Authorization", `Bearer ${token}`)
       .field("title", "A random byte")
       .field("tags", "music, rpg, elements")
@@ -113,7 +113,7 @@ describe("byte posting", () => {
     await makeUserActive(users[0].email);
     const token = sign(users[0].email, process.env.JWT_KEY);
     const response = await request(app)
-      .post("/byte/")
+      .post("/api/byte/")
       .set("Authorization", `Bearer ${token}`)
       .field("title", "A random byte")
       .field("tags", "music, rpg, elements")

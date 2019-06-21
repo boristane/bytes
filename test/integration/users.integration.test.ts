@@ -44,7 +44,7 @@ describe("users listing", () => {
     const params = {
       email
     };
-    const url = buildUrl("/user/", params);
+    const url = buildUrl("/api/user/", params);
     const response = await request(app).get(url);
 
     expect(response.status).toBe(404);
@@ -55,7 +55,7 @@ describe("users listing", () => {
     const params = {
       email
     };
-    const url = buildUrl("/user/", params);
+    const url = buildUrl("/api/user/", params);
     const response = await request(app).get(url);
     expect(response.status).toBe(200);
     expect(response.body.user.name).toEqual(users[0].name);
@@ -146,7 +146,7 @@ describe("delete", () => {
     const params = {
       email
     };
-    const url = buildUrl("/user/", params);
+    const url = buildUrl("/api/user/", params);
     const token = sign(users[0].email, process.env.JWT_KEY);
     const response = await request(app)
       .delete(url)
@@ -160,7 +160,7 @@ describe("delete", () => {
     const params = {
       email
     };
-    const url = buildUrl("/user/", params);
+    const url = buildUrl("/api/user/", params);
     const nonAdmins = users.filter(user => !user.admin);
     const token = sign(nonAdmins[0].email, process.env.JWT_KEY);
 
@@ -176,7 +176,7 @@ describe("delete", () => {
     const params = {
       email
     };
-    const url = buildUrl("/user/", params);
+    const url = buildUrl("/api/user/", params);
     const admins = users.filter(user => user.admin);
     const token = sign(admins[0].email, process.env.JWT_KEY);
 
