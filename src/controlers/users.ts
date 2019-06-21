@@ -117,6 +117,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
     const token = sign(user.email, process.env.JWT_KEY);
 
     return res.status(200).json({
+      id: user.id,
       token,
       message: "Authentication successful."
     });

@@ -43,8 +43,8 @@ export async function loadFile(filePath: string) {
   return await Axios.get(filePath);
 }
 
-export async function getUser(email: string) {
-  const res = await instance.get(`/user/?email=${email}`);
+export async function getUser(id: number) {
+  const res = await instance.get(`/user/?id=${id}`);
   return res.data;
 }
 

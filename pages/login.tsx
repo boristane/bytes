@@ -23,12 +23,12 @@ export default function Login(props) {
   const handleSubmit = async e => {
     e.preventDefault();
     setMessage("");
-    const { token } = await login(email, password);
+    const { token, id } = await login(email, password);
     if (!token) {
       return setMessage("Authentication failed.");
     }
     localStorage.setItem("token", token);
-    localStorage.setItem("email", email);
+    localStorage.setItem("id", id);
     instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     Router.push("/");

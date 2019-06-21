@@ -16,10 +16,10 @@ function handleLogout(e) {
 export default function Header() {
   const [user, setUser] = useState({ name: "" });
   useEffect(() => {
-    const email = localStorage.getItem("email");
+    const id = parseInt(localStorage.getItem("id"), 10);
     async function fetchData() {
-      if (email) {
-        const res = await getUser(email);
+      if (id) {
+        const res = await getUser(id);
         setUser(res.user);
       }
     }
