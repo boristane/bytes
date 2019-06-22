@@ -72,7 +72,7 @@ const Content = props => {
           }
         
         pre { 
-          background-color: black;
+          background-color: #f7f7f7;
           padding: 15px;
           border-radius: 2px;
           overflow-x: auto;
@@ -97,7 +97,6 @@ const Content = props => {
         .language-bash,
         .language-js,
         .language-ts {
-          color: lightgray;
           font-family: Courier, monospace, sans-serif !important;
         }   
         
@@ -129,7 +128,7 @@ const Content = props => {
         }
         /*change the thinkness of the scrollbar here*/
         ::-webkit-scrollbar {
-          width: 5px;
+          width: px;
           height: 2px;
           -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0); 
           -webkit-border-radius: 1px;
