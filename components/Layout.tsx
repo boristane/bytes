@@ -10,7 +10,7 @@ export default function Layout(props) {
         <style>
           {`
           body {
-            font: 13px Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+            font: 15px Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
             color: #444444
           }
           ul {

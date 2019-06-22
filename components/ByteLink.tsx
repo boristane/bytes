@@ -4,7 +4,8 @@ import React from "react";
 const dateLayout = {
   display: "inline-block",
   textAlign: "right" as "right",
-  color: "grey"
+  color: "grey",
+  fontSize: 10
 };
 
 const titleLayout = {

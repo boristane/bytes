@@ -6,7 +6,7 @@ import { Request } from "express";
 import { ServerResponse } from "http";
 import next from "next";
 
-const expectedEnvVariables = [
+const expectedEnvVariables: string[] = [
   "JWT_KEY",
   "PGHOST",
   "PGPORT",
@@ -24,7 +24,7 @@ const expectedEnvVariables = [
   "ENV"
 ];
 
-const missingEnvVariables = [];
+const missingEnvVariables: string[] = [];
 
 expectedEnvVariables.forEach(variable => {
   if (!process.env[variable]) {

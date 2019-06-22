@@ -59,7 +59,7 @@ const Content = props => {
           </div>
         </h1>
         <img src={props.byte.image} className="header-image" />
-        <div className="body">
+        <div className="body" style={{ color: "black" }}>
           <Markdown markup={markdown} />
         </div>
       </div>
@@ -72,11 +72,10 @@ const Content = props => {
           }
         
         pre { 
-          background-color: #f9f9f9;
+          background-color: black;
           padding: 15px;
           border-radius: 2px;
           overflow-x: auto;
-          border: 0.5px solid rgb(253, 101, 101)
         }
 
         h1 {
@@ -98,9 +97,9 @@ const Content = props => {
         .language-bash,
         .language-js,
         .language-ts {
-            color: #070707;
-          font-family: monospace !important;
-        }    
+          color: lightgray;
+          font-family: Courier, monospace, sans-serif !important;
+        }   
         
         strong {
           font-weight: 600;
@@ -128,6 +127,34 @@ const Content = props => {
         em {
           color: grey;
         }
+        /*change the thinkness of the scrollbar here*/
+        ::-webkit-scrollbar {
+          width: 5px;
+          height: 2px;
+          -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0); 
+          -webkit-border-radius: 1px;
+          border-radius: 1px;
+        }
+        ::-webkit-scrollbar:hover {
+          width: 5px;
+          height: 5px;
+          border-radius: 3px;
+        }
+        /*add a shadow to the scrollbar here*/
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0); 
+            -webkit-border-radius: 1px;
+            border-radius: 1px;
+        }
+        /*this is the little scrolly dealio in the bar*/ 
+        ::-webkit-scrollbar-thumb {
+            border-radius: 1px;
+            background: rgb(253, 101, 101);
+            height: 3px;
+        }
+        /*nobody needs this little scrollbar corner, I mean really, get rid of it haha*/  
+          ::-webkit-scrollbar-corner       { display: none; height: 0px; width: 0px; }
+       
         @media only screen and (max-width: 600px) {
           h1 {
             font-size: 20px
