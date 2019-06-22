@@ -98,7 +98,13 @@ const Content = props => {
         .language-js,
         .language-ts {
           font-family: Courier, monospace, sans-serif !important;
-        }   
+        } 
+        
+        code {
+          font-family: Courier, monospace, sans-serif !important;
+          background-color: lightgray;
+          color: rgb(253, 101, 101)
+        }
         
         strong {
           font-weight: 600;
@@ -111,7 +117,6 @@ const Content = props => {
         
         ul {
           padding-left: 15px;
-          list-style-type: none;
         }
         
         p img {

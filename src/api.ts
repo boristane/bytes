@@ -6,7 +6,7 @@ const { URL: url } = publicRuntimeConfig;
 
 const instance = Axios.create({
   baseURL: url,
-  timeout: 2500
+  timeout: 15000
 });
 
 export default instance;
