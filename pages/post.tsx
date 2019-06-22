@@ -128,7 +128,7 @@ const Content = props => {
         }
         /*change the thinkness of the scrollbar here*/
         ::-webkit-scrollbar {
-          width: px;
+          width: 2px;
           height: 2px;
           -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0); 
           -webkit-border-radius: 1px;
