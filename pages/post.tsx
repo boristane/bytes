@@ -59,7 +59,7 @@ const Content = props => {
           </div>
         </h1>
         <img src={props.byte.image} className="header-image" />
-        <div className="body" style={{ color: "black" }}>
+        <div className="body" style={{ color: "#444" }}>
           <Markdown markup={markdown} />
         </div>
       </div>
@@ -81,13 +81,15 @@ const Content = props => {
         h1 {
           font-weight: normal;
           margin-top: 40px;
-          font-size: 16px
+          font-size: 16px;
         }
         
         h2, h3, h4 {
           font-weight: normal;
           margin-top: 40px;
-          font-size: 16px
+          font-size: 22px;
+          padding-left: 15px;
+          border-left: 5px solid rgb(253, 101, 101)
         }
         
         .body h1 {
@@ -100,31 +102,24 @@ const Content = props => {
           font-family: Courier, monospace, sans-serif !important;
         } 
         
-        code {
-          font-family: Courier, monospace, sans-serif !important;
-          background-color: lightgray;
-          color: rgb(253, 101, 101)
-        }
-        
         strong {
           font-weight: 600;
           color: #444;
         }
         
         ol {
-          padding-left: 1.6em;
+          margin-left: 25px;
         }
         
         ul {
-          padding-left: 15px;
+          margin-left: 25px;
         }
         
         p img {
           width: 100%;
         }
         
-        p, ol,
-        p, ul {
+        p {
           line-height: 25px;
         }
         

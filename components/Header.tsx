@@ -45,7 +45,13 @@ export default function Header() {
       <style>
         {`
           .header {
-            margin-bottom: 50px
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            padding: 20px 50px;
+            background-color: white;
+            width: 100%;
+            border-bottom: 1px solid #f1f1f1
           }
           `}
       </style>

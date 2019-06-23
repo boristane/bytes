@@ -10,8 +10,9 @@ export default function Layout(props) {
         <style>
           {`
           body {
+            padding-top: 50px;
             font: 15px Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
-            color: #444444
+            color: #444
           }
           ul {
             padding: 0;
