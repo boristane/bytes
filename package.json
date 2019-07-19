@@ -59,6 +59,6 @@
     "react-showdown": "^1.6.0",
     "ts-node": "^8.0.3",
     "typeorm": "^0.2.16",
-    "typescript": "^3.4.3"
+    "typescript": "^3.5.3"
   }
 }
