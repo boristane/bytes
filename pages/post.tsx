@@ -50,9 +50,7 @@ const Content = props => {
             <a style={{ fontSize: 20, lineHeight: 1.8 }}>{props.byte.title}</a>
           </Link>
           <div>
-            <span style={{ color: "grey" }}>
-              {date.toLocaleDateString("en-US", dateOptions)}
-            </span>
+            <span style={{ color: "grey" }}>{date.toLocaleDateString("en-US", dateOptions)}</span>
             <a onClick={handleDelete} style={{ marginLeft: 15 }} href="/">
               {token === "" ? "" : "(delete)"}
             </a>
@@ -128,8 +126,8 @@ const Content = props => {
         }
         /*change the thinkness of the scrollbar here*/
         ::-webkit-scrollbar {
-          width: 2px;
-          height: 2px;
+          width: 8px;
+          height: 8px;
           -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0); 
           -webkit-border-radius: 1px;
           border-radius: 1px;
