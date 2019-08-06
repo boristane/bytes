@@ -9,7 +9,8 @@ const dateLayout = {
 };
 
 const titleLayout = {
-  display: "inline-block"
+  display: "inline-block",
+  maxWidth: "60%"
 };
 
 export default function ByteLink(props) {
@@ -32,7 +33,7 @@ export default function ByteLink(props) {
       <style>
         {`
           .byte-link {
-            height: 20px
+            min-height: 20px
           }
           .date-div{
             width: 150px;
