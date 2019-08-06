@@ -21,6 +21,15 @@ services:
       PGHOST: database-host
       PGDATABASE: bytes
       PORT: 80
+      JWT_KEY: random
+      URL: http://localhost/api
+      AWS_SECRET_ACCESS_KEY: random
+      AWS_ACCESS_KEY_ID: random
+      BUCKET: random
+      DOMAIN: random
+      MAILGUN_KEY: random
+      SLACK_HOOK_URL: random
+      ENV: dev
   postgres:
     container_name: postgres
     image: postgres:11
