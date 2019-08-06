@@ -11,6 +11,10 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link
+            href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&display=swap"
+            rel="stylesheet"
+          />
           <style>{`body { margin: 0 } /* custom! */`}</style>
           <link rel="shortcut icon" href="../static/favicon.ico" />
         </Head>

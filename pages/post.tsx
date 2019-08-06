@@ -63,11 +63,11 @@ const Content = props => {
       </div>
       <style>
         {`
-          .header-image {
-            object-fit: cover;
-            width: 100%;
-            height: 300px;
-          }
+        .header-image {
+          object-fit: cover;
+          width: 100%;
+          height: 300px;
+        }
         
         pre { 
           background-color: #f7f7f7;
@@ -97,7 +97,7 @@ const Content = props => {
         .language-bash,
         .language-js,
         .language-ts {
-          font-family: Courier, monospace, sans-serif !important;
+          font-family: 'Ubuntu Mono', monospace;
         } 
         
         strong {
@@ -124,33 +124,6 @@ const Content = props => {
         em {
           color: grey;
         }
-        /*change the thinkness of the scrollbar here*/
-        ::-webkit-scrollbar {
-          width: 8px;
-          height: 8px;
-          -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0); 
-          -webkit-border-radius: 1px;
-          border-radius: 1px;
-        }
-        ::-webkit-scrollbar:hover {
-          width: 5px;
-          height: 5px;
-          border-radius: 3px;
-        }
-        /*add a shadow to the scrollbar here*/
-        ::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0); 
-            -webkit-border-radius: 1px;
-            border-radius: 1px;
-        }
-        /*this is the little scrolly dealio in the bar*/ 
-        ::-webkit-scrollbar-thumb {
-            border-radius: 1px;
-            background: rgb(253, 101, 101);
-            height: 3px;
-        }
-        /*nobody needs this little scrollbar corner, I mean really, get rid of it haha*/  
-          ::-webkit-scrollbar-corner       { display: none; height: 0px; width: 0px; }
        
         @media only screen and (max-width: 600px) {
           h1 {
