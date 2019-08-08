@@ -133,7 +133,17 @@ const Content = props => {
         .body h1 {
           display: none
         }
+
+        p code {
+          background-color: #f9f2f4;
+          color: #c7254e;
+          font-size: 13px;
+          display: inline-block;
+          padding: 0 5px;
+          border-radius: 4px
+        }
         
+        pre code,
         .language-bash,
         .language-js,
         .language-ts {
