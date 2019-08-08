@@ -5,6 +5,7 @@ import { Markdown } from "react-showdown";
 import Link from "next/link";
 import Router from "next/router";
 import Error from "next/error";
+import { NextSeo } from "next-seo";
 
 const layoutStyle = {
   maxWidth: 650,
@@ -43,26 +44,48 @@ const Content = props => {
   };
 
   return (
-    <Layout>
-      <div style={layoutStyle}>
-        <h1 style={{ marginBottom: 25 }}>
-          <Link href={`/post?id=${props.byte.id}`} as={`/b/${props.byte.id}`}>
-            <a style={{ fontSize: 20, lineHeight: 1.8 }}>{props.byte.title}</a>
-          </Link>
-          <div>
-            <span style={{ color: "grey" }}>{date.toLocaleDateString("en-US", dateOptions)}</span>
-            <a onClick={handleDelete} style={{ marginLeft: 15 }} href="/">
-              {token === "" ? "" : "(delete)"}
-            </a>
+    <>
+      <NextSeo
+        title={`${props.byte.title}`}
+        description="Bytes are a series of small blog posts by Boris Tane."
+        openGraph={{
+          url: `https://bytes.boristane.com/b/${props.id}`,
+          title: `${props.byte.title}`,
+          description: "Bytes are a series of small blog posts by Boris Tane.",
+          images: [
+            {
+              url: props.byte.image,
+              width: 500,
+              height: 500,
+              alt: "Bytes"
+            }
+          ],
+          site_name: "Bytes by Boris Tane"
+        }}
+        twitter={{
+          handle: "@BorisTane"
+        }}
+      />
+      <Layout>
+        <div style={layoutStyle}>
+          <h1 style={{ marginBottom: 25 }}>
+            <Link href={`/post?id=${props.byte.id}`} as={`/b/${props.byte.id}`}>
+              <a style={{ fontSize: 20, lineHeight: 1.8 }}>{props.byte.title}</a>
+            </Link>
+            <div>
+              <span style={{ color: "grey" }}>{date.toLocaleDateString("en-US", dateOptions)}</span>
+              <a onClick={handleDelete} style={{ marginLeft: 15 }} href="/">
+                {token === "" ? "" : "(delete)"}
+              </a>
+            </div>
+          </h1>
+          <img src={props.byte.image} className="header-image" />
+          <div className="body" style={{ color: "#444" }}>
+            <Markdown markup={markdown} />
           </div>
-        </h1>
-        <img src={props.byte.image} className="header-image" />
-        <div className="body" style={{ color: "#444" }}>
-          <Markdown markup={markdown} />
         </div>
-      </div>
-      <style>
-        {`
+        <style>
+          {`
         .header-image {
           object-fit: cover;
           width: 100%;
@@ -99,6 +122,17 @@ const Content = props => {
         .language-ts {
           font-family: 'Ubuntu Mono', monospace;
         } 
+
+        blockquote {
+          width: 100%;
+          margin: 0;
+          text-align: center;
+          padding-top: 20px;
+          padding-bottom: 20px;
+          color: black;
+          font-style: italic;
+          font-size: 16px;
+        }
         
         strong {
           font-weight: 600;
@@ -134,8 +168,9 @@ const Content = props => {
           }
         }
         `}
-      </style>
-    </Layout>
+        </style>
+      </Layout>
+    </>
   );
 };
 
