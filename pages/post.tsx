@@ -5,7 +5,7 @@ import { Markdown } from "react-showdown";
 import Link from "next/link";
 import Router from "next/router";
 import Error from "next/error";
-import { NextSeo } from "next-seo";
+import { NextSeo, BlogJsonLd } from "next-seo";
 
 const layoutStyle = {
   maxWidth: 650,
@@ -52,19 +52,36 @@ const Content = props => {
           url: `https://bytes.boristane.com/b/${props.id}`,
           title: `${props.byte.title}`,
           description: "Bytes are a series of small blog posts by Boris Tane.",
+          type: "article",
+          article: {
+            publishedTime: props.byte.created,
+            modifiedTime: props.byte.updated,
+            section: "Software Engineering",
+            authors: ["https://www.boristane.com"],
+            tags: props.byte.tags
+          },
           images: [
             {
               url: props.byte.image,
-              width: 500,
-              height: 500,
-              alt: "Bytes"
+              alt: `${props.byte.title}`
             }
           ],
           site_name: "Bytes by Boris Tane"
         }}
         twitter={{
-          handle: "@BorisTane"
+          handle: "@BorisTane",
+          site: "@BorisTane",
+          cardType: "summary"
         }}
+      />
+      <BlogJsonLd
+        url={`https://bytes.boristane.com/b/${props.id}`}
+        title={`${props.byte.title}`}
+        images={[props.byte.image]}
+        datePublished={props.byte.created}
+        dateModified={props.byte.updated}
+        authorName="Boris Tane"
+        description="Bytes are a series of small blog posts by Boris Tane."
       />
       <Layout>
         <div style={layoutStyle}>
