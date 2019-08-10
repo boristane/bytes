@@ -44,6 +44,7 @@ export default function Footer(props) {
         {`
         .footer {
           bottom: 10px;
+          left: 0;
           margin-top: 50px;
           text-align: center;
           background-color: white;
