@@ -34,7 +34,7 @@ export default function About() {
           handle: "@BorisTane"
         }}
       />
-      <Layout>
+      <Layout {...{ isIndex: true }}>
         <div style={style}>
           <p>
             <span style={{ textDecoration: "underline" }}>byte</span>: a unit of digital information

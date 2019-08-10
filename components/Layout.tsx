@@ -1,5 +1,6 @@
 import Header from "./Header";
 import React from "react";
+import Footer from "./Footer";
 
 export default function Layout(props) {
   return (
@@ -7,6 +8,7 @@ export default function Layout(props) {
       <div className="main">
         <Header />
         {props.children}
+        <Footer {...props} />
         <style>
           {`
           body {
@@ -45,11 +47,11 @@ export default function Layout(props) {
       <style>
         {`
         .main {
-          padding: 20px 50px;
+          padding: 20px 50px 10px 50px;
         }
         @media only screen and (max-width: 600px) {
           .main {
-            padding: 20px;
+            padding: 20px 20px 10px 20px;
           }
         }
         `}

@@ -11,7 +11,7 @@ export default function Index(props) {
   });
   if (props.err) return <Error statusCode={404} />;
   return (
-    <Layout>
+    <Layout {...{ isIndex: true }}>
       <ul>
         {props.bytes.map(byte => {
           return (
