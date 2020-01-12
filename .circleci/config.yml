@@ -84,7 +84,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: false
       - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASS
       - run: echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
       - run: echo 'export IMAGE_NAME=bytes' >> $BASH_ENV
@@ -100,7 +100,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: false
       - run: docker login -u $HEROKU_LOGIN -p $HEROKU_API_KEY registry.heroku.com
       - run: docker build --rm=false -t registry.heroku.com/$HEROKU_APP_NAME/web .
       - run: docker push registry.heroku.com/$HEROKU_APP_NAME/web
