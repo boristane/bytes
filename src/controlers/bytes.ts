@@ -22,11 +22,7 @@ export async function getMany(req: Request, res: Response): Promise<Response> {
       .orderBy("byte.created", "DESC")
       .skip((page - 1) * numPerPage)
       .take(numPerPage)
-      .getMany();
-
-    if (result.length === 0) {
-      return send404(res);
-    }
+    .getMany();
 
     const bytes = result.map(byte => {
       return {
