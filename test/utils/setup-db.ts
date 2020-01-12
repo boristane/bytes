@@ -38,7 +38,14 @@ export default async function main() {
   const connection = await createConnectionToDB();
   await connection.synchronize(true);
   console.log("Database initialised.");
-  // await populateDB();
-  // console.log("Database populated.");
+  await populateDB();
+  console.log("Database populated.");
+  await connection.close();
+}
+
+export async function justSetupDb() {
+  const connection = await createConnectionToDB();
+  await connection.synchronize(true);
+  console.log("Database initialised.");
   await connection.close();
 }

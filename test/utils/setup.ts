@@ -1,3 +1,3 @@
-import setupDB from "./setup-db";
+import { justSetupDb } from "./setup-db";
 
-setupDB();
+justSetupDb();
