@@ -101,6 +101,28 @@ export async function signup(req: Request, res: Response): Promise<Response> {
   }
 }
 
+export async function resendActivationToken(req: Request, res: Response) {
+  try {
+    const { email } = req.body;
+    const user = await getRepository(User).findOneOrFail({ email });
+    const { token } = await createToken(user);
+    sendTokenEmail(user.email, token.token);
+
+    const response = {
+      message: "Tokent sent succesfully.",
+      user: {
+        name,
+      },
+      request: {
+        type: "GET",
+        url: `${process.env.URL}/user/?email=${user.id}`
+      }
+    }
+  } catch (err) {
+    send500(res, err);
+  }
+}
+
 export async function login(req: Request, res: Response): Promise<Response> {
   const { email, password } = req.body;
   try {
