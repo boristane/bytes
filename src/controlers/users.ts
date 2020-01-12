@@ -111,13 +111,14 @@ export async function resendActivationToken(req: Request, res: Response) {
     const response = {
       message: "Tokent sent succesfully.",
       user: {
-        name,
+        email: user.email,
       },
       request: {
         type: "GET",
         url: `${process.env.URL}/user/?email=${user.id}`
       }
     }
+    res.status(200).json(response);
   } catch (err) {
     send500(res, err);
   }
